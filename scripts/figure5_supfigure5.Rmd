@@ -1,8 +1,6 @@
 ---
 title: "R Notebook - Figure 5 and Supplementary Figure 5"
-output:
-  html_document:
-    df_print: paged
+output: html_document
 ---
 This notebook covers plots in Figure 5 and Supplementary Figure 5.
 
