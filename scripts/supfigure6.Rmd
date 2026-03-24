@@ -3,6 +3,9 @@ title: "R Notebook - Supplementary Figure 6"
 output:
   github_document:
     toc: true
+  html_document:
+    df_print: paged
+    keep_md: true
 ---
 This notebook covers plots in Supplementary Figure 6.
 

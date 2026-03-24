@@ -1,14 +1,18 @@
-R Notebook - Figure 4 and Supplementary Figure 4
-================
-
-- [Figure 4A](#figure-4a)
-- [Figure 4C](#figure-4c)
-- [Supplementary Figure 4A](#supplementary-figure-4a)
-- [Supplementary Figure 4I](#supplementary-figure-4i)
-
+---
+title: "R Notebook - Figure 4 and Supplementary Figure 4"
+output:
+  html_document:
+    df_print: paged
+    keep_md: true
+  github_document:
+    toc: true
+---
 This notebook covers plots in Figure 4 and Supplementary Figure 4.
 
+
+
 Required packages and directories.
+
 
 ``` r
 library(data.table)
@@ -33,6 +37,7 @@ source("./scripts/colors.R")
 
 Read in data.
 
+
 ``` r
 # Stuart et al. healthy BM CITE-seq data
 plot_stuart_sc_bm <- fread(paste0(input_dir, 'stuart_sc_bm_df.tsv'))
@@ -49,8 +54,8 @@ metadata_populations <- fread(paste0(input_dir, 'metadata_populations.tsv'))
 
 # Figure 4A
 
-Project classical immature GPR56+ LSCs and non-classical MoDe-LSCs onto
-a CITE-seq reference map of healthy hematopoiesis (Stuart et al.).
+Project classical immature GPR56+ LSCs and non-classical MoDe-LSCs onto a CITE-seq reference map of healthy hematopoiesis (Stuart et al.).
+
 
 ``` r
 # Combine bulk projections with Stuart et al. BM
@@ -128,7 +133,7 @@ p_lsc <- bulk_projections_stuart_sc_bm %>%
 p_lsc
 ```
 
-![](figure4_supfigure4_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](figure4_supfigure4_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
 ``` r
 save_plot(paste0(output_dir, 'Projection_LSCs.pdf'), p_lsc, base_height = 5, base_width = 6)
@@ -136,8 +141,8 @@ save_plot(paste0(output_dir, 'Projection_LSCs.pdf'), p_lsc, base_height = 5, bas
 
 # Figure 4C
 
-Plot the relative transcription factor expression of different
-LSC-types. Compare always against LMPP-like LSCs.
+Plot the relative transcription factor expression of different LSC-types. Compare always against LMPP-like LSCs. 
+
 
 ``` r
 res_LMPP_MoDe <- fread(paste0(input_dir, 'DEG_LMPP_MoDe.tsv'))
@@ -151,7 +156,9 @@ tf_genes <- decoupleR::get_dorothea(organism = "human", levels = c('A', 'B', 'C'
 length(tf_genes)
 ```
 
-    ## [1] 429
+```
+## [1] 429
+```
 
 ``` r
 # Annotate TFs
@@ -225,7 +232,7 @@ p_bubble <- df.all %>%
 p_bubble
 ```
 
-![](figure4_supfigure4_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](figure4_supfigure4_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
 save_plot(paste0(output_dir, 'TF_expression.pdf'), p_bubble, base_height = 3, base_width = 13)
@@ -233,10 +240,8 @@ save_plot(paste0(output_dir, 'TF_expression.pdf'), p_bubble, base_height = 3, ba
 
 # Supplementary Figure 4A
 
-Project publicly available RNA-seq data of CD34/CD38 AML fractions from
-Zeng et al. (Nature Medicine 2022) onto a healthy BM reference (Stuart
-et al.). Compare the CD34/CD38 fractions with our GPR56+ LSCs and
-MoDe-LSCs projected onto the same reference.
+Project publicly available RNA-seq data of CD34/CD38 AML fractions from Zeng et al. (Nature Medicine 2022) onto a healthy BM reference (Stuart et al.). Compare the CD34/CD38 fractions with our GPR56+ LSCs and MoDe-LSCs projected onto the same reference. 
+
 
 ``` r
 # Zeng et al cell type predictions
@@ -311,18 +316,16 @@ p_alluvial <- df.alluvial %>%
 p_alluvial
 ```
 
-![](figure4_supfigure4_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](figure4_supfigure4_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
 save_plot(paste0(output_dir, 'FACS_to_celltype_predictions.pdf'), p_alluvial, ncol = 2, base_height = 5, base_width = 3)
 ```
-
 # Supplementary Figure 4I
 
-Plot oncoprints of recurrent mutations and cytogenetics grouped by
-LSC-type for diagnosis and salvage patient cohort. Use FACS sorted
-population metadata that contains clinical and mutational information of
-the patient.
+Plot oncoprints of recurrent mutations and cytogenetics grouped by LSC-type for diagnosis and salvage patient cohort.
+Use FACS sorted population metadata that contains clinical and mutational information of the patient.
+
 
 ``` r
 # Keep only classical LSCs
@@ -358,27 +361,31 @@ mat <- meta.lsc %>%
   as.matrix()
 ```
 
-    ## Warning: `funs()` was deprecated in dplyr 0.8.0.
-    ## ℹ Please use a list of either functions or lambdas:
-    ## 
-    ## # Simple named list: list(mean = mean, median = median)
-    ## 
-    ## # Auto named with `tibble::lst()`: tibble::lst(mean, median)
-    ## 
-    ## # Using lambdas list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
-    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-    ## generated.
+```
+## Warning: `funs()` was deprecated in dplyr 0.8.0.
+## ℹ Please use a list of either functions or lambdas:
+## 
+## # Simple named list: list(mean = mean, median = median)
+## 
+## # Auto named with `tibble::lst()`: tibble::lst(mean, median)
+## 
+## # Using lambdas list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+```
 
-    ## Warning: `funs()` was deprecated in dplyr 0.8.0.
-    ## ℹ Please use a list of either functions or lambdas:
-    ## 
-    ## # Simple named list: list(mean = mean, median = median)
-    ## 
-    ## # Auto named with `tibble::lst()`: tibble::lst(mean, median)
-    ## 
-    ## # Using lambdas list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
-    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-    ## generated.
+```
+## Warning: `funs()` was deprecated in dplyr 0.8.0.
+## ℹ Please use a list of either functions or lambdas:
+## 
+## # Simple named list: list(mean = mean, median = median)
+## 
+## # Auto named with `tibble::lst()`: tibble::lst(mean, median)
+## 
+## # Using lambdas list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+```
 
 ``` r
 # In order to clearly visualize the data, genes for which less than 4% patients have mutations (l2) and patients which have mutations in less than 1% of the genes (l1) are removed.
@@ -443,16 +450,20 @@ ht <- oncoPrint(t(mat.flt), alter_fun = alter_fun, col = col, column_title = NUL
                heatmap_legend_param = heatmap_legend_param)
 ```
 
-    ## All mutation types: other, snv, loss, gain.
+```
+## All mutation types: other, snv, loss, gain.
+```
 
-    ## `alter_fun` is assumed vectorizable. If it does not generate correct
-    ## plot, please set `alter_fun_is_vectorized = FALSE` in `oncoPrint()`.
+```
+## `alter_fun` is assumed vectorizable. If it does not generate correct
+## plot, please set `alter_fun_is_vectorized = FALSE` in `oncoPrint()`.
+```
 
 ``` r
 ht
 ```
 
-![](figure4_supfigure4_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](figure4_supfigure4_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 # Save without histogram (barplot) on the right side
@@ -466,9 +477,11 @@ ht_minimal <- oncoPrint(t(mat.flt), alter_fun = alter_fun, col = col, column_tit
                heatmap_legend_param = heatmap_legend_param)
 ```
 
-    ## All mutation types: other, snv, loss, gain.
-    ## `alter_fun` is assumed vectorizable. If it does not generate correct
-    ## plot, please set `alter_fun_is_vectorized = FALSE` in `oncoPrint()`.
+```
+## All mutation types: other, snv, loss, gain.
+## `alter_fun` is assumed vectorizable. If it does not generate correct
+## plot, please set `alter_fun_is_vectorized = FALSE` in `oncoPrint()`.
+```
 
 ``` r
 pdf(paste0(output_dir, 'Combined_cohort_oncoPrint_LSCtypes.pdf'), width = 4.5, height = 3)
@@ -476,5 +489,8 @@ ht_minimal
 dev.off()
 ```
 
-    ## quartz_off_screen 
-    ##                 2
+```
+## quartz_off_screen 
+##                 2
+```
+
