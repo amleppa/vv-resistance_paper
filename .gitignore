@@ -4,3 +4,4 @@ omnipathr-log
 code_github.Rproj
 input/beataml_waves1to4_norm_exp_dbgap.txt 
 input/beataml_wv1to4_clinical.xlsx
+scripts/*_files/

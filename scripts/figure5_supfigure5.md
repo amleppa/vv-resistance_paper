@@ -1,18 +1,19 @@
----
-title: "R Notebook - Figure 5 and Supplementary Figure 5"
-output:
-  github_document:
-    toc: true
----
-This notebook covers plots in Figure 5 and Supplementary Figure 5.
+R Notebook - Figure 5 and Supplementary Figure 5
+================
 
-```{r setup, include=FALSE}
-    knitr::opts_knit$set(root.dir = normalizePath('/Users/leppam/dkfz/venetoclax/manuscripts/code_github/')) 
-```
+- [Figure 5A](#figure-5a)
+- [Figure 5B](#figure-5b)
+- [Figure 5G-H and Supplementary Figure
+  5H](#figure-5g-h-and-supplementary-figure-5h)
+- [Supplementary Figure 5A](#supplementary-figure-5a)
+- [Supplementary Figure 5B](#supplementary-figure-5b)
+- [Supplementary Figure 5F-G](#supplementary-figure-5f-g)
+
+This notebook covers plots in Figure 5 and Supplementary Figure 5.
 
 Required packages and directories.
 
-```{r, message=F}
+``` r
 library(data.table)
 library(dplyr)
 library(purrr)
@@ -33,7 +34,7 @@ source("./scripts/colors.R")
 
 Read in data.
 
-```{r}
+``` r
 # Paired scRNA-seq data for plotting
 plot_sc_paired <- fread(paste0(input_dir, 'sc_paired_df.tsv'))
 
@@ -54,8 +55,7 @@ responder_vs_relapse_degs <- fread(paste0(input_dir, 'res_responder_vs_relapse_L
 
 Plot density plots of diagnosis and R/R for MEP-biased samples.
 
-```{r}
-
+``` r
 # Rename
 plot_stuart_sc_bm <- plot_stuart_sc_bm %>%
   rename(predicted.celltype = celltype.l2)
@@ -130,7 +130,15 @@ p_diagnosis <- plot_df %>%
        title = 'Diagnosis') +
   scale_x_continuous(limits= c(-15, 5)) +
   scale_y_continuous(limits= c(-10, 10))
+```
 
+    ## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+    ## ℹ Please use `linewidth` instead.
+    ## This warning is displayed once every 8 hours.
+    ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    ## generated.
+
+``` r
 p_rr <- plot_df %>%
   filter(predicted.celltype %in% myeloid.cells) %>%
   # Shuffle rows
@@ -180,15 +188,43 @@ p_rr <- plot_df %>%
 p_both <- p_diagnosis +  p_rr
 
 p_both
-
-save_plot(paste0(output_dir, 'Paired_diagnosis_relapse_shift.pdf'), p_both, ncol = 2, base_height = 5, base_width = 4)
-
 ```
+
+    ## Warning: Removed 2 rows containing non-finite outside the scale range
+    ## (`stat_density2d()`).
+
+    ## Warning: Removed 4 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+    ## Warning: Removed 2 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+    ## Warning: Removed 4 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](figure5_supfigure5_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+``` r
+save_plot(paste0(output_dir, 'Paired_diagnosis_relapse_shift.pdf'), p_both, ncol = 2, base_height = 5, base_width = 4)
+```
+
+    ## Warning: Removed 2 rows containing non-finite outside the scale range
+    ## (`stat_density2d()`).
+    ## Removed 4 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+    ## Warning: Removed 2 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+    ## Warning: Removed 4 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
 # Figure 5B
 
-Plot myeloid progenitor cell type abundances in paired scRNA-seq data using Stuart et al. BM reference.
+Plot myeloid progenitor cell type abundances in paired scRNA-seq data
+using Stuart et al. BM reference.
 
-```{r}
+``` r
 # Summarize myeloid progenitor cell counts
 totals.prog <- plot_sc_paired %>% 
   filter(predicted.celltype %in% cell.types.prog) %>%
@@ -201,7 +237,12 @@ totals.prog <- plot_sc_paired %>%
          ) %>%
   mutate(group = factor(group, levels = c('TP53-mut','CK,\nTP53-wt','NPM1-mut')),
          patient = factor(patient, levels = c(c('P9','P10','P16','P19','P11','P13','P14','P18'))))
+```
 
+    ## `summarise()` has grouped output by 'patient'. You can override using the
+    ## `.groups` argument.
+
+``` r
 title <- 'Myeloid progenitor cells projected onto a\n healthy BM reference from Stuart et al.'
 
 b_prog <- plot_sc_paired %>%
@@ -236,21 +277,29 @@ b_prog <- plot_sc_paired %>%
   labs(x = NULL,
        y = "Cell Fraction",
        title = title)
+```
 
+    ## `summarise()` has grouped output by 'patient', 'stage', 'predicted.celltype'.
+    ## You can override using the `.groups` argument.
+
+``` r
 b_prog
+```
 
+![](figure5_supfigure5_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+``` r
 cowplot::save_plot(paste0(output_dir, 'Paired_proportion_myeloid_progenitors_ref_stuart.pdf'), b_prog, base_width = 6.5, base_heigh = 4)
 ```
+
 # Figure 5G-H and Supplementary Figure 5H
 
-Plot enriched and depleted Hallmark pathways in Immature GPR56+ LSCs of:
-1. Unmatched VEN/HMA diagnostic responder samples vs refractory samples
-2. Unmatched VEN/HMA diagnostic responder samples vs relapse samples
-3. Unmatched VEN/HMA non-responders vs refractory 
+Plot enriched and depleted Hallmark pathways in Immature GPR56+ LSCs
+of: 1. Unmatched VEN/HMA diagnostic responder samples vs refractory
+samples 2. Unmatched VEN/HMA diagnostic responder samples vs relapse
+samples 3. Unmatched VEN/HMA non-responders vs refractory
 
-
-```{r, fig.height = 5, fig.width = 15}
-
+``` r
 # All comparisons
 comparison.list <- list(responder_vs_refractory_gsea, responder_vs_relapse_gsea, non_responder_vs_refractory_gsea)
 
@@ -296,17 +345,20 @@ plots_gsea <- lapply(comparison.list, function(df.gsea){
 
 p_gsea_all <- plots_gsea[[1]] +  plots_gsea[[2]] + plots_gsea[[3]]
 p_gsea_all
-
-save_plot(paste0(output_dir, 'GSEA_prevv_vs_postvv.pdf'), p_gsea_all, ncol = 3, base_height = 4, base_width = 4.5)
-
 ```
 
+![](figure5_supfigure5_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+``` r
+save_plot(paste0(output_dir, 'GSEA_prevv_vs_postvv.pdf'), p_gsea_all, ncol = 3, base_height = 4, base_width = 4.5)
+```
 
 # Supplementary Figure 5A
 
-Plot myeloid cell type abundances in paired scRNA-seq data using Stuart et al. BM reference.
+Plot myeloid cell type abundances in paired scRNA-seq data using Stuart
+et al. BM reference.
 
-```{r}
+``` r
 # Summarize myeloid progenitor cell counts
 totals.myeloid <- plot_sc_paired %>% 
   filter(predicted.celltype %in% myeloid.cells) %>%
@@ -320,7 +372,12 @@ totals.myeloid <- plot_sc_paired %>%
          ) %>%
   mutate(group = factor(group, levels = c('TP53-mut','CK,\nTP53-wt','NPM1-mut')),
          patient = factor(patient, levels = c(c('P9','P10','P16','P19','P11','P13','P14','P18'))))
+```
 
+    ## `summarise()` has grouped output by 'patient'. You can override using the
+    ## `.groups` argument.
+
+``` r
 title <- 'Myeloid cells projected onto a\n healthy BM reference from Stuart et al.'
 
 b_myeloid <- plot_sc_paired %>%
@@ -355,20 +412,27 @@ b_myeloid <- plot_sc_paired %>%
   labs(x = NULL,
        y = "Cell Fraction",
        title = title)
+```
 
+    ## `summarise()` has grouped output by 'patient', 'stage', 'predicted.celltype'.
+    ## You can override using the `.groups` argument.
+
+``` r
 b_myeloid
+```
 
+![](figure5_supfigure5_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+``` r
 cowplot::save_plot(paste0(output_dir, 'Paired_proportion_myeloid_cells_ref_stuart.pdf'), b_myeloid, base_width = 6.5, base_heigh = 4)
-
 ```
 
 # Supplementary Figure 5B
 
-Plot myeloid progenitor cell type abundances in paired scRNA-seq data using Zeng et al. BM reference.
+Plot myeloid progenitor cell type abundances in paired scRNA-seq data
+using Zeng et al. BM reference.
 
-
-```{r}
-
+``` r
 # Summarize myeloid progenitor cell counts
 totals.prog_zeng <- plot_sc_paired %>% 
   filter(predicted_CellType_Broad %in% cell.types.prog_zeng) %>%
@@ -382,7 +446,12 @@ totals.prog_zeng <- plot_sc_paired %>%
          ) %>%
   mutate(group = factor(group, levels = c('TP53-mut','CK,\nTP53-wt','NPM1-mut')),
          patient = factor(patient, levels = c(c('P9','P10','P16','P19','P11','P13','P14','P18'))))
+```
 
+    ## `summarise()` has grouped output by 'patient'. You can override using the
+    ## `.groups` argument.
+
+``` r
 title <- 'Myeloid cells projected onto a\n healthy BM reference from Zeng et al.'
 
 b_prog_zeng <- plot_sc_paired %>%
@@ -417,21 +486,27 @@ b_prog_zeng <- plot_sc_paired %>%
   labs(x = NULL,
        y = "Cell Fraction",
        title = title)
+```
 
+    ## `summarise()` has grouped output by 'patient', 'stage',
+    ## 'predicted_CellType_Broad'. You can override using the `.groups` argument.
+
+``` r
 b_prog_zeng
+```
 
+![](figure5_supfigure5_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+``` r
 cowplot::save_plot(paste0(output_dir, 'Paired_proportion_myeloid_progenitors_ref_zeng.pdf'), b_prog_zeng, base_width = 7, base_heigh = 4)
-
 ```
 
 # Supplementary Figure 5F-G
 
-Plot DEG results between Immature GPR56+ of:
-1. Unmatched VEN/HMA responder vs refractory
-2. Unmatched VEN/HMA responder vs relapse
+Plot DEG results between Immature GPR56+ of: 1. Unmatched VEN/HMA
+responder vs refractory 2. Unmatched VEN/HMA responder vs relapse
 
-```{r}
-
+``` r
 comparisons <- c('responder_vs_refractory','responder_vs_relapse')
 
 responder_vs_refractory_degs <- fread(paste0(input_dir, 'res_responder_vs_refractory_LSC.tsv'))
@@ -512,8 +587,10 @@ plots_degs <- lapply(comparisons, FUN = function(comparison){
 plots_degs_all <- plots_degs[[1]] +  plots_degs[[2]]
 
 plots_degs_all
-
-save_plot(paste0(output_dir, 'DEGs_prevv_vs_postvv.pdf'), plots_degs_all, ncol = 2, base_height = 4, base_width = 4)
-
 ```
 
+![](figure5_supfigure5_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+``` r
+save_plot(paste0(output_dir, 'DEGs_prevv_vs_postvv.pdf'), plots_degs_all, ncol = 2, base_height = 4, base_width = 4)
+```

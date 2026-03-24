@@ -1,18 +1,15 @@
----
-title: "R Notebook - Supplementary Figure 3"
-output:
-  github_document:
-    toc: true
----
-This notebook covers plots in Supplementary Figure 3.
+R Notebook - Supplementary Figure 3
+================
 
-```{r setup, include=FALSE}
-    knitr::opts_knit$set(root.dir = normalizePath('/Users/leppam/dkfz/venetoclax/manuscripts/code_github/')) 
-```
+- [Supplementary Figure 3A](#supplementary-figure-3a)
+- [Supplementary Figure 3B](#supplementary-figure-3b)
+- [Supplementary Figure 3D](#supplementary-figure-3d)
+
+This notebook covers plots in Supplementary Figure 3.
 
 Required packages and directories.
 
-```{r, message=F}
+``` r
 library(data.table)
 library(dplyr)
 library(tidyr)
@@ -27,12 +24,11 @@ library(broom)
 
 input_dir <- "./input/"
 output_dir <- "./output/"
-
 ```
 
 Read in BEAT AML data.
 
-```{r}
+``` r
 # Normalized expression data
 expr <- fread(paste0(input_dir, 'beataml_waves1to4_norm_exp_dbgap.txt'))
 
@@ -47,15 +43,13 @@ drug_responses <- fread(paste0(input_dir, 'beat_drug_responses.tsv'), sep = "\t"
 
 # Drug families
 df_drug.families <- fread(paste0(input_dir, 'beataml_drug_families.tsv'))
-
 ```
 
 # Supplementary Figure 3A
 
 Plot LAMP5 expression in BEAT AML.
 
-```{r, fig.height = 8, fig.width = 8}
-
+``` r
 # Pattern to detect amplification involving chromosome 8
 amp_chr8_pattern <- "(\\+8|dup\\(8|dup\\(8[pq]|amp\\(8|8[pq]\\+|i\\(8q\\)|hsr\\(8|der\\(8|mar\\(.*8)"
 # Pattern to detect TP53 deletion
@@ -153,15 +147,25 @@ p_lamp5 <- expr.lamp5 %>%
         legend.position = 'none')
 
 p_lamp5  
-
-save_plot(paste0(output_dir, 'LAMP5_expr_beat_aml_disease_subgroups.pdf'), p_lamp5, base_height = 8, base_width = 8)
-
 ```
+
+    ## Warning: Removed 7 rows containing missing values or values outside the scale range
+    ## (`geom_segment()`).
+
+![](supfigure3_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+``` r
+save_plot(paste0(output_dir, 'LAMP5_expr_beat_aml_disease_subgroups.pdf'), p_lamp5, base_height = 8, base_width = 8)
+```
+
+    ## Warning: Removed 7 rows containing missing values or values outside the scale range
+    ## (`geom_segment()`).
+
 # Supplementary Figure 3B
 
 Plot multivariate linear regression of LAMP5 and genetics.
 
-```{r}
+``` r
 # Variables to include
 variables <- c('consensus_sex','ageAtSpecimenAcquisition',
               'Dup8','t(8;16)','-17/-17p13/TP53', 'KMT2A-re',
@@ -222,19 +226,27 @@ p_reg <- lmod.tidy %>%
   theme(axis.text.x=element_text(angle=45, hjust=0.5, vjust = 0.5))
 
 p_reg
+```
 
+![](supfigure3_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+``` r
 save_plot(paste0(output_dir, 'LAMP5_expr_beat_aml_linear_regression.pdf'), p_reg, base_height = 5, base_width = 5)
-
 ```
 
 # Supplementary Figure 3D
 
 Plot CIBERSORTx deconvolution and ex vivo drug response results.
 
-Ex vivo drug response in AML patient samples from BEAT-AML (Tyler et al. 2018) was measured through the AUC metric where low AUC score represents sensitivity and high score resistance. Acute promyelocytic leukaemia samples were excluded from the analysis. AUC values were scaled and multiplied by −1 to represent sensitivity in each treatment condition. Pearson correlation was used to measure association between cell type abundance and drug sensitivities. 
+Ex vivo drug response in AML patient samples from BEAT-AML (Tyler et
+al. 2018) was measured through the AUC metric where low AUC score
+represents sensitivity and high score resistance. Acute promyelocytic
+leukaemia samples were excluded from the analysis. AUC values were
+scaled and multiplied by −1 to represent sensitivity in each treatment
+condition. Pearson correlation was used to measure association between
+cell type abundance and drug sensitivities.
 
-```{r}
-
+``` r
 # Function to plot results
 drug_obs_correlations <- function(drug_responses, beat_deconvolution, celltype) {
   print(celltype)
@@ -274,7 +286,26 @@ for (celltype in celltypes) {
   temp$CellType <- celltype
   results <- rbind(results, temp)
 }
+```
 
+    ## [1] "HSC"
+    ## [1] 326 122
+    ## [1] "LMPP"
+    ## [1] 326 122
+    ## [1] "MEP"
+    ## [1] 326 122
+    ## [1] "GMP"
+    ## [1] 326 122
+    ## [1] "Mono"
+    ## [1] 326 122
+    ## [1] "ProgDC"
+    ## [1] 326 122
+    ## [1] "pDC"
+    ## [1] 326 122
+    ## [1] "cDC2"
+    ## [1] 326 122
+
+``` r
 df.correlation <- results
 
 # Perform multiple testing correction and identify significant cell - drug relationships
@@ -342,8 +373,14 @@ p_corr <- df_plot %>%
         legend.key.size = unit(0.4, "cm"))
 
 p_corr
-
-save_plot(paste0(output_dir, 'Exvivo_response_deconvolution.pdf'), p_corr, base_height = 5, base_width = 8)
-
 ```
 
+    ## Warning: Using size for a discrete variable is not advised.
+
+![](supfigure3_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+``` r
+save_plot(paste0(output_dir, 'Exvivo_response_deconvolution.pdf'), p_corr, base_height = 5, base_width = 8)
+```
+
+    ## Warning: Using size for a discrete variable is not advised.

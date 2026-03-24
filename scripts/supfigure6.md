@@ -1,18 +1,15 @@
----
-title: "R Notebook - Supplementary Figure 6"
-output:
-  github_document:
-    toc: true
----
-This notebook covers plots in Supplementary Figure 6.
+R Notebook - Supplementary Figure 6
+================
 
-```{r setup, include=FALSE}
-    knitr::opts_knit$set(root.dir = normalizePath('/Users/leppam/dkfz/venetoclax/manuscripts/code_github/')) 
-```
+- [Supplementary Figure 6A](#supplementary-figure-6a)
+- [Supplementary Figure 6A](#supplementary-figure-6a-1)
+- [Supplementary Figure 6F](#supplementary-figure-6f)
+
+This notebook covers plots in Supplementary Figure 6.
 
 Required packages and directories.
 
-```{r, message=F}
+``` r
 library(data.table)
 library(dplyr)
 library(tidyr)
@@ -32,12 +29,11 @@ output_dir <- "./output/"
 
 # Color script
 source("./scripts/colors.R")
-
 ```
 
 Read in data.
 
-```{r}
+``` r
 # Paired scRNA-seq data for plotting
 plot_sc_paired <- fread(paste0(input_dir, 'sc_paired_df.tsv'))
 
@@ -49,16 +45,14 @@ sc_paired_gene_counts_df <- fread(paste0(input_dir, 'sc_paired_gene_counts_df.ts
 
 # Cell line projections
 cell_line_projections <- fread(paste0(input_dir, 'cell_line_projections_df.tsv'))
-
 ```
-
 
 # Supplementary Figure 6A
 
-Plot myeloid cells from a patient with with MEP-LSCs using CITE-seq data from Stuart et al. as the BM reference.
+Plot myeloid cells from a patient with with MEP-LSCs using CITE-seq data
+from Stuart et al. as the BM reference.
 
-```{r}
-
+``` r
 # Get cell type coordinates for labels
 label_coord <- plot_stuart_sc_bm %>%
   rename(predicted.celltype = celltype.l2) %>%
@@ -149,21 +143,38 @@ b_prog <- plot_sc_paired %>%
         plot.margin = margin(0, 0, 0, 0)) +
   labs(x = NULL,
        y = "Cell Fraction")
+```
 
+    ## `summarise()` has grouped output by 'patient', 'stage'. You can override using
+    ## the `.groups` argument.
+
+``` r
 plot_both <- p_umap + b_prog +
   plot_layout(widths = c(2, 0.5))
 
 plot_both
-
-save_plot(paste0(output_dir, 'Projection_MEP_LSC_patient.pdf'), plot_both, base_height = 5, base_width = 6)
-
 ```
+
+    ## Warning in plot_theme(plot): The `ggh4x.facet.nestline` theme element is not defined in the element
+    ## hierarchy.
+
+![](supfigure6_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+``` r
+save_plot(paste0(output_dir, 'Projection_MEP_LSC_patient.pdf'), plot_both, base_height = 5, base_width = 6)
+```
+
+    ## Warning in plot_theme(plot): The `ggh4x.facet.nestline` theme element is not defined in the element
+    ## hierarchy.
+    ## The `ggh4x.facet.nestline` theme element is not defined in the element
+    ## hierarchy.
+
 # Supplementary Figure 6A
 
-Plot expression of MEP markers in myeloid cells for a patient with MEP-LSCs.
+Plot expression of MEP markers in myeloid cells for a patient with
+MEP-LSCs.
 
-```{r}
-
+``` r
 plot.idx <- 'P10'
 
 # Genes of interest
@@ -185,8 +196,12 @@ meta_summary <- sc_paired_gene_counts_df %>%
   mutate(Gene = factor(Gene, levels = c(int.gene)),
          gene_group = factor(gene_group, levels = c('MEP','LMPP')),
          predicted.celltype = factor(predicted.celltype, levels = cell.types))
+```
 
+    ## `summarise()` has grouped output by 'patient', 'stage', 'predicted.celltype'.
+    ## You can override using the `.groups` argument.
 
+``` r
 # Get unique gene groups in their desired order
 gene_groups <- c('MEP','LMPP')
 plot_title <- 'Patient with MEP-LSCs'
@@ -277,16 +292,19 @@ p_dotplot <- wrap_plots(panels, ncol = 1, heights = heights) +
   )
 
 p_dotplot
-
-save_plot(paste0(output_dir, 'Expression_MEP_LMPP_genes.pdf'), p_dotplot, base_height = 5, base_width = 6)
-
 ```
+
+![](supfigure6_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+``` r
+save_plot(paste0(output_dir, 'Expression_MEP_LMPP_genes.pdf'), p_dotplot, base_height = 5, base_width = 6)
+```
+
 # Supplementary Figure 6F
 
 Project cell line transcriptomes onto a healthy BM reference.
 
-```{r}
-
+``` r
 # Combine cell line projections with Stuart et al. BM
 cell_line_projections_stuart_sc_bm <- bind_rows(cell_line_projections, plot_stuart_sc_bm)
 
@@ -344,8 +362,10 @@ p_cell_lines <- plot_stuart_sc_bm %>%
   coord_fixed()
 
 p_cell_lines
-
-save_plot(file = paste0(output_dir, "Healthy_BM_depmap_cell_lines_annotated2.pdf"), p_cell_lines, base_height = 4, base_width = 5) 
-
 ```
 
+![](supfigure6_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+``` r
+save_plot(file = paste0(output_dir, "Healthy_BM_depmap_cell_lines_annotated2.pdf"), p_cell_lines, base_height = 4, base_width = 5) 
+```
