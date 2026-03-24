@@ -1,0 +1,5 @@
+BEAT-AML RNA-seq data can be downloaded from https://biodev.github.io/BeatAML2/.
+
+Clinical Summary: beataml_wv1to4_clinical.xlsx
+Normalized Expression: beataml_waves1to4_norm_exp_dbgap.txt
+
