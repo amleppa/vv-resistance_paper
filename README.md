@@ -6,6 +6,12 @@ For the full manuscript see:
 
 Code for the manuscript figures can be found here:
 
+[Code for Figure 2 and Supplementary Figure 2](https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/figure2_supfigure2.html)
+[Code for Supplementary Figure 3](https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/supfigure3.html)
+[Code for Figure 4 and Supplementary Figure 4](https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/figure4_supfigure4.html)
+[Code for Figure 5 and Supplementary Figure 5](https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/figure5_supfigure5.html)
+[Code for Supplementary Figure 6](https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/supfigure6.html)
+
 ## Sample ID mapping
 
 The file `sample_id_key.tsv` provides a mapping between sequencing sample IDs used in this repository (`Sample`) and the sample identifiers used in the manuscript (`D.ID_1`, as reported in Supplementary Table 6).
