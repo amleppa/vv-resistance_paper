@@ -8,16 +8,17 @@ Code for the manuscript figures can be found here:
 
 Code for the manuscript figures can be found here:
 
-[Code for Figure 2 and Supplementary Figure 2]([https://github.com/](https://htmlpreview.github.io/?https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/figure2_supfigure2.html)
+[Code for Figure 2 and Supplementary Figure 2](https://htmlpreview.github.io/?https://github.com/amleppa/vv-resistance_paper/blob/master/scripts/figure2_supfigure2.html)
 
-[Code for Supplementary Figure 3](https://htmlpreview.github.io/?https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/supfigure3.html)
+https://htmlpreview.github.io/?https://github.com/amleppa/vv-resistance_paper/blob/master/scripts/figure2_supfigure2.html
 
+[Code for Supplementary Figure 3](https://htmlpreview.github.io/?https://github.com/amleppa/vv-resistance_paper/blob/master/scripts/supfigure3.html)
 
-[Code for Figure 4 and Supplementary Figure 4](https://htmlpreview.github.io/?https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/figure4_supfigure4.html)
+[Code for Figure 4 and Supplementary Figure 4](https://htmlpreview.github.io/?https://github.com/amleppa/vv-resistance_paper/blob/master/scripts/figure4_supfigure4.html)
 
-[Code for Figure 5 and Supplementary Figure 5](https://htmlpreview.github.io/?https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/figure5_supfigure5.html)
+[Code for Figure 5 and Supplementary Figure 5](https://htmlpreview.github.io/?https://github.com/amleppa/vv-resistance_paper/blob/master/scripts/figure5_supfigure5.html)
 
-[Code for Supplementary Figure 6](https://htmlpreview.github.io/?https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/supfigure6.html)
+[Code for Supplementary Figure 6](https://htmlpreview.github.io/?https://github.com/amleppa/vv-resistance_paper/blob/master/scripts/supfigure6.html)
 
 
 [Code for Figure 2 and Supplementary Figure 2](scripts/figure2_supfigure2.md)
