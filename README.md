@@ -6,11 +6,11 @@ For the full manuscript see:
 
 Code for the manuscript figures can be found here:
 
-[Code for Figure 2 and Supplementary Figure 2](https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/figure2_supfigure2.html)
-[Code for Supplementary Figure 3](https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/supfigure3.html)
-[Code for Figure 4 and Supplementary Figure 4](https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/figure4_supfigure4.html)
-[Code for Figure 5 and Supplementary Figure 5](https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/figure5_supfigure5.html)
-[Code for Supplementary Figure 6](https://github.com/amleppa/vv-resistance_paper/blob/main/scripts/supfigure6.html)
+[Code for Figure 2 and Supplementary Figure 2](scripts/figure2_supfigure2.md)
+[Code for Supplementary Figure 3](scripts/supfigure3.md)
+[Code for Figure 4 and Supplementary Figure 4](scripts/figure4_supfigure4.md)
+[Code for Figure 5 and Supplementary Figure 5](scripts/figure5_supfigure5.md)
+[Code for Supplementary Figure 6](scripts/supfigure6.md)
 
 ## Sample ID mapping
 
