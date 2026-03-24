@@ -1,0 +1,519 @@
+---
+title: "R Notebook - Figure 5 and Supplementary Figure 5"
+output:
+  html_document:
+    df_print: paged
+---
+This notebook covers plots in Figure 5 and Supplementary Figure 5.
+
+```{r setup, include=FALSE}
+    knitr::opts_knit$set(root.dir = normalizePath('/Users/leppam/dkfz/venetoclax/manuscripts/code_github/')) 
+```
+
+Required packages and directories.
+
+```{r, message=F}
+library(data.table)
+library(dplyr)
+library(purrr)
+library(stringr) 
+library(ggplot2)
+library(ggrepel)
+library(ggrastr)
+library(patchwork)
+library(ggpubr)
+library(cowplot)
+
+input_dir <- "./input/"
+output_dir <- "./output/"
+
+# Color script
+source("./scripts/colors.R")
+```
+
+Read in data.
+
+```{r}
+# Paired scRNA-seq data for plotting
+plot_sc_paired <- fread(paste0(input_dir, 'sc_paired_df.tsv'))
+
+# Stuart et al. healthy BM CITE-seq data
+plot_stuart_sc_bm <- fread(paste0(input_dir, 'stuart_sc_bm_df.tsv'))
+
+# GSEA results
+responder_vs_refractory_gsea <- fread(paste0(input_dir, 'responder_vs_refractory_resHallmarkGSEA_LSC.tsv'))
+responder_vs_relapse_gsea <- fread(paste0(input_dir, 'responder_vs_relapse_resHallmarkGSEA_LSC.tsv'))
+non_responder_vs_refractory_gsea <- fread(paste0(input_dir, 'non_responder_vs_refractory_resHallmarkGSEA_LSC.tsv'))
+
+# DESeq2 results
+responder_vs_refractory_degs <- fread(paste0(input_dir, 'res_responder_vs_refractory_LSC.tsv'))
+responder_vs_relapse_degs <- fread(paste0(input_dir, 'res_responder_vs_relapse_LSC.tsv'))
+```
+
+# Figure 5A
+
+Plot density plots of diagnosis and R/R for MEP-biased samples.
+
+```{r}
+
+# Rename
+plot_stuart_sc_bm <- plot_stuart_sc_bm %>%
+  rename(predicted.celltype = celltype.l2)
+
+# Get cell type coordinates for labels
+label_coord <- plot_stuart_sc_bm %>%
+  group_by(predicted.celltype) %>%
+  summarise(refUMAP_1 = mean(refUMAP_1),
+            refUMAP_2 = mean(refUMAP_2)) %>%
+  ungroup() %>%
+  filter(predicted.celltype %in% myeloid.cells)
+
+
+# Downsample AML samples
+set.seed(1234)
+keep.id <- c('P9','P10','P16','P19')
+
+plot_sc_paired.down <- plot_sc_paired %>%
+  filter(predicted.celltype %in% myeloid.cells & patient %in% keep.id) %>%
+  group_by(patient, stage) %>%
+  sample_n(500) %>%
+  mutate(batch = 'AML')
+
+# Combine hBM and downsampled AML
+keep.cols <- intersect(colnames(plot_sc_paired.down), colnames(plot_stuart_sc_bm))
+
+plot_df <- bind_rows(plot_sc_paired.down %>% select(all_of(keep.cols), stage, patient),
+                     plot_stuart_sc_bm %>% select(all_of(keep.cols)))
+  
+
+p_diagnosis <- plot_df %>%
+  filter(predicted.celltype %in% myeloid.cells) %>%
+  # Shuffle rows
+  sample_frac() %>%
+  ggplot(aes(refUMAP_1, refUMAP_2)) +
+  ggrastr::geom_point_rast(data = . %>% filter(batch == 'bmcite'),
+                           fill = 'lightgrey', size = 0.05, shape = 21, color = "#00000000", raster.dpi = 1000) +
+  ggrastr::geom_point_rast(data = . %>% filter(stage == 'Diagnosis'),
+                           fill = colors.D, size = 0.1, shape = 21, color = "#00000000") +
+  geom_density_2d(data = . %>% filter(stage == 'Diagnosis'),
+                  color = colors.D, bins = 20, contour_var = 'ndensity', size = 0.1, linemitre = 50) +
+  # Add cell type labels
+  geom_text_repel(data = label_coord,
+                  aes(refUMAP_1, refUMAP_2, label = predicted.celltype),
+                  size = 2.5,
+                  fontface = 2,
+                  force = 5,
+                  force_pull = 0.5,
+                  max.overlaps = Inf,
+                  box.padding = 0.8,
+                  point.padding = 0.5,
+                  direction = "both", 
+                  segment.color = "black",
+                  segment.size = 0.25) +
+  theme_pubr(legend = 'bottom') + 
+  theme(legend.text = element_text(size = 12),
+        legend.title = element_blank(), 
+        plot.title = element_text(color = colors.D, hjust = 0.5, size = 10),
+        axis.text=element_text(size=12),
+        axis.title=element_text(size=12),
+        axis.line=element_blank(),
+        axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.ticks=element_blank()
+  ) +
+  guides(fill = guide_legend(override.aes = list(size=3))) +
+  coord_fixed() +
+   labs(x = "UMAP 1",
+       y = "UMAP 2",
+       title = 'Diagnosis') +
+  scale_x_continuous(limits= c(-15, 5)) +
+  scale_y_continuous(limits= c(-10, 10))
+
+p_rr <- plot_df %>%
+  filter(predicted.celltype %in% myeloid.cells) %>%
+  # Shuffle rows
+  sample_frac() %>%
+  ggplot(aes(refUMAP_1, refUMAP_2)) +
+  ggrastr::geom_point_rast(data = . %>% filter(batch == 'bmcite'),
+                           fill = 'lightgrey', size = 0.05, shape = 21, color = "#00000000", raster.dpi = 1000) +
+  ggrastr::geom_point_rast(data = . %>% filter(stage == 'R/R'),
+                           fill = colors.R, size = 0.1, shape = 21, color = "#00000000") +
+  geom_density_2d(data = . %>% filter(stage == 'R/R'),
+                  color = colors.R, bins = 20, contour_var = 'ndensity', size = 0.1, linemitre = 50) +
+  # Add cell type labels
+  geom_text_repel(data = label_coord,
+                  aes(refUMAP_1, refUMAP_2, label = predicted.celltype),
+                  size = 2.5,
+                  fontface = 2,
+                  force = 5,
+                  force_pull = 0.5,
+                  max.overlaps = Inf,
+                  box.padding = 0.8,
+                  point.padding = 0.5,
+                  direction = "both", 
+                  segment.color = "black",
+                  segment.size = 0.25) +
+  theme_pubr(legend = 'bottom') + 
+  theme(legend.text = element_text(size = 12),
+        legend.title = element_blank(), 
+        plot.title = element_text(color = colors.R, hjust = 0.5, size = 10),
+        axis.text=element_text(size=12),
+        axis.title=element_text(size=12),
+        axis.line=element_blank(),
+        axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.ticks=element_blank()
+  ) +
+  guides(fill = guide_legend(override.aes = list(size=3))) +
+  coord_fixed() +
+  labs(x = "UMAP 1",
+       y = "UMAP 2",
+       title = 'Refractory') +
+  scale_x_continuous(limits= c(-15, 5)) +
+  scale_y_continuous(limits= c(-10, 10))
+
+
+p_both <- p_diagnosis +  p_rr
+
+p_both
+
+save_plot(paste0(output_dir, 'Paired_diagnosis_relapse_shift.pdf'), p_both, ncol = 2, base_height = 5, base_width = 4)
+
+```
+# Figure 5B
+
+Plot myeloid progenitor cell type abundances in paired scRNA-seq data using Stuart et al. BM reference.
+
+```{r}
+# Summarize myeloid progenitor cell counts
+totals.prog <- plot_sc_paired %>% 
+  filter(predicted.celltype %in% cell.types.prog) %>%
+  group_by(patient, stage) %>%
+  summarize(total = n()) %>%
+  # Add a nesting variable
+  mutate(group = case_when(patient %in% c('P9','P10','P16','P19') ~ 'TP53-mut',
+                           patient %in% c('P11') ~ 'CK,\nTP53-wt',
+                           patient %in% c('P13','P14','P18') ~ 'NPM1-mut')
+         ) %>%
+  mutate(group = factor(group, levels = c('TP53-mut','CK,\nTP53-wt','NPM1-mut')),
+         patient = factor(patient, levels = c(c('P9','P10','P16','P19','P11','P13','P14','P18'))))
+
+title <- 'Myeloid progenitor cells projected onto a\n healthy BM reference from Stuart et al.'
+
+b_prog <- plot_sc_paired %>%
+  # Add a nesting variable
+  mutate(group = case_when(patient %in% c('P9','P10','P16','P19') ~ 'TP53-mut',
+                           patient %in% c('P11') ~ 'CK,\nTP53-wt',
+                           patient %in% c('P13','P14','P18') ~ 'NPM1-mut'),
+         patient = factor(patient, levels = c(c('P9','P10','P16','P19','P11','P13','P14','P18'))),
+         predicted.celltype = factor(predicted.celltype, levels = myeloid.cells)) %>%
+  mutate(group = factor(group, levels = c('TP53-mut','CK,\nTP53-wt','NPM1-mut')),
+         ) %>%
+  filter(predicted.celltype %in% cell.types.prog) %>%
+  group_by(patient, stage, predicted.celltype, group) %>%
+  summarise(pct = n()) %>% 
+  ungroup() %>%
+  ggplot(aes(x = stage, y = pct)) + 
+  geom_bar(aes(fill = predicted.celltype), position="fill", stat="identity", width=0.7) +
+  scale_fill_manual(values = col.myeloid, name = NULL) +
+  geom_text(data = totals.prog, aes(x = stage, y = 1.1, label = paste0('n =\n', total)), size = 2.5) +
+  scale_y_continuous(breaks = seq(0, 1, 0.2), expand = expansion(add = c(0, 0.07))) +
+  ggh4x::facet_nested(. ~  group + patient, nest_line = element_line(linetype = 2), solo_line = F, resect = unit(0.5, "cm")) +
+  cowplot::theme_cowplot() +
+  theme(axis.text.x=element_text(angle = 45, vjust = 1, hjust=1),
+        ggh4x.facet.nestline = element_line(colour = "darkgrey"),
+        strip.background = element_blank(),
+        strip.text = element_text(size = 10),
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 10),
+        legend.text = element_text(size = 10),
+        panel.spacing.x = unit(0.5, "lines"),
+        plot.title = element_text(hjust = 0.5, size = 10)) +
+  labs(x = NULL,
+       y = "Cell Fraction",
+       title = title)
+
+b_prog
+
+cowplot::save_plot(paste0(output_dir, 'Paired_proportion_myeloid_progenitors_ref_stuart.pdf'), b_prog, base_width = 6.5, base_heigh = 4)
+```
+# Figure 5G-H and Supplementary Figure 5H
+
+Plot enriched and depleted Hallmark pathways in Immature GPR56+ LSCs of:
+1. Unmatched VEN/HMA diagnostic responder samples vs refractory samples
+2. Unmatched VEN/HMA diagnostic responder samples vs relapse samples
+3. Unmatched VEN/HMA non-responders vs refractory 
+
+
+```{r, fig.height = 5, fig.width = 15}
+
+# All comparisons
+comparison.list <- list(responder_vs_refractory_gsea, responder_vs_relapse_gsea, non_responder_vs_refractory_gsea)
+
+col.response <- c('Pre_VV' = '#084594',
+                  'Post_VV' = '#FF0000')
+
+plots_gsea <- lapply(comparison.list, function(df.gsea){
+  
+  comparison <- str_to_sentence(str_replace_all(unique(df.gsea$Comparison), '_', ' '))
+  
+  # Define order for lollipop plot based on padj and NES
+  df.gsea <- df.gsea %>%
+    mutate(NES_padj = -log10(p.adjust)*abs(NES))
+  
+  # Remove gene sets not informatiove for AML
+  remove.gs <- c(' Apical Junction', ' Estrogen Response Late', ' Myogenesis', ' Estrogen Response Early', ' Adipogenesis', ' Spermatogenesis', ' Xenobiotic Metabolism',
+                 ' Bile Acid Metabolism', ' Cholesterol Homeostasis', ' Androgen Response', ' Apical Surface', ' Angiogenesis')
+  
+  # Lollipop plot
+  p_gsea <- df.gsea %>% 
+    filter(!ID %in% remove.gs) %>%
+    filter(p.adjust < 0.1) %>%
+    ggplot(aes(y = -log10(p.adjust), x = reorder(ID, NES_padj))) +
+    geom_segment(aes(yend = 0, xend = ID)) +
+    geom_point(aes(size = abs(NES), color = Group)) +
+    geom_hline(yintercept =-log10(0.1), linetype = 'dashed', color = 'darkgrey') +
+    scale_color_manual(values = col.response) +
+    facet_grid(Group ~ ., scales = 'free', space = 'free', drop = TRUE) +
+    labs(x = NULL,
+        y = '-log10 p.adjust',
+        title = comparison) +
+    # labs(fill="") +
+    coord_flip(clip = 'off') +
+    scale_y_continuous(expand = expansion(add = c(0, 0.1)),
+                       position = "left", limits = c(0, -log10(min(df.gsea$p.adjust)) + 0.5)) +
+    theme_pubr(legend = 'right') +
+    theme(strip.background = element_blank(),
+          strip.text.y = element_blank()) +
+    guides(size = guide_legend(title = 'NES'))
+  
+  
+})
+
+p_gsea_all <- plots_gsea[[1]] +  plots_gsea[[2]] + plots_gsea[[3]]
+p_gsea_all
+
+save_plot(paste0(output_dir, 'GSEA_prevv_vs_postvv.pdf'), p_gsea_all, ncol = 3, base_height = 4, base_width = 4.5)
+
+```
+
+
+# Supplementary Figure 5A
+
+Plot myeloid cell type abundances in paired scRNA-seq data using Stuart et al. BM reference.
+
+```{r}
+# Summarize myeloid progenitor cell counts
+totals.myeloid <- plot_sc_paired %>% 
+  filter(predicted.celltype %in% myeloid.cells) %>%
+  group_by(patient, stage) %>%
+  summarize(total = n()) %>%
+  ungroup() %>%
+  # Add a nesting variable
+  mutate(group = case_when(patient %in% c('P9','P10','P16','P19') ~ 'TP53-mut',
+                           patient %in% c('P11') ~ 'CK,\nTP53-wt',
+                           patient %in% c('P13','P14','P18') ~ 'NPM1-mut')
+         ) %>%
+  mutate(group = factor(group, levels = c('TP53-mut','CK,\nTP53-wt','NPM1-mut')),
+         patient = factor(patient, levels = c(c('P9','P10','P16','P19','P11','P13','P14','P18'))))
+
+title <- 'Myeloid cells projected onto a\n healthy BM reference from Stuart et al.'
+
+b_myeloid <- plot_sc_paired %>%
+  # Add a nesting variable
+  mutate(group = case_when(patient %in% c('P9','P10','P16','P19') ~ 'TP53-mut',
+                           patient %in% c('P11') ~ 'CK,\nTP53-wt',
+                           patient %in% c('P13','P14','P18') ~ 'NPM1-mut'),
+         patient = factor(patient, levels = c(c('P9','P10','P16','P19','P11','P13','P14','P18'))),
+         predicted.celltype = factor(predicted.celltype, levels = myeloid.cells)) %>%
+  mutate(group = factor(group, levels = c('TP53-mut','CK,\nTP53-wt','NPM1-mut')),
+         ) %>%
+  filter(predicted.celltype %in% myeloid.cells) %>%
+  group_by(patient, stage, predicted.celltype, group) %>%
+  summarise(pct = n()) %>% 
+  ungroup() %>%
+  ggplot(aes(x = stage, y = pct)) + 
+  geom_bar(aes(fill = predicted.celltype), position="fill", stat="identity", width=0.7) +
+  scale_fill_manual(values = col.myeloid, name = NULL) +
+  geom_text(data = totals.myeloid, aes(x = stage, y = 1.1, label = paste0('n =\n', total)), size = 2.5) +
+  scale_y_continuous(breaks = seq(0, 1, 0.2), expand = expansion(add = c(0, 0.07))) +
+  ggh4x::facet_nested(. ~  group + patient, nest_line = element_line(linetype = 2), solo_line = F, resect = unit(0.5, "cm")) +
+  cowplot::theme_cowplot() +
+  theme(axis.text.x=element_text(angle = 45, vjust = 1, hjust=1),
+        ggh4x.facet.nestline = element_line(colour = "darkgrey"),
+        strip.background = element_blank(),
+        strip.text = element_text(size = 10),
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 10),
+        legend.text = element_text(size = 10),
+        panel.spacing.x = unit(0.5, "lines"),
+        plot.title = element_text(hjust = 0.5, size = 10)) +
+  labs(x = NULL,
+       y = "Cell Fraction",
+       title = title)
+
+b_myeloid
+
+cowplot::save_plot(paste0(output_dir, 'Paired_proportion_myeloid_cells_ref_stuart.pdf'), b_myeloid, base_width = 6.5, base_heigh = 4)
+
+```
+
+# Supplementary Figure 5B
+
+Plot myeloid progenitor cell type abundances in paired scRNA-seq data using Zeng et al. BM reference.
+
+
+```{r}
+
+# Summarize myeloid progenitor cell counts
+totals.prog_zeng <- plot_sc_paired %>% 
+  filter(predicted_CellType_Broad %in% cell.types.prog_zeng) %>%
+  group_by(patient, stage) %>%
+  summarize(total = n()) %>%
+  ungroup() %>%
+  # Add a nesting variable
+  mutate(group = case_when(patient %in% c('P9','P10','P16','P19') ~ 'TP53-mut',
+                           patient %in% c('P11') ~ 'CK,\nTP53-wt',
+                           patient %in% c('P13','P14','P18') ~ 'NPM1-mut')
+         ) %>%
+  mutate(group = factor(group, levels = c('TP53-mut','CK,\nTP53-wt','NPM1-mut')),
+         patient = factor(patient, levels = c(c('P9','P10','P16','P19','P11','P13','P14','P18'))))
+
+title <- 'Myeloid cells projected onto a\n healthy BM reference from Zeng et al.'
+
+b_prog_zeng <- plot_sc_paired %>%
+  # Add a nesting variable
+  mutate(group = case_when(patient %in% c('P9','P10','P16','P19') ~ 'TP53-mut',
+                           patient %in% c('P11') ~ 'CK,\nTP53-wt',
+                           patient %in% c('P13','P14','P18') ~ 'NPM1-mut'),
+         patient = factor(patient, levels = c(c('P9','P10','P16','P19','P11','P13','P14','P18'))),
+         predicted_CellType_Broad = factor(predicted_CellType_Broad, levels = myeloid.cells_zeng)) %>%
+  mutate(group = factor(group, levels = c('TP53-mut','CK,\nTP53-wt','NPM1-mut')),
+         ) %>%
+  filter(predicted_CellType_Broad %in% cell.types.prog_zeng) %>%
+  group_by(patient, stage, predicted_CellType_Broad, group) %>%
+  summarise(pct = n()) %>% 
+  ungroup() %>%
+  ggplot(aes(x = stage, y = pct)) + 
+  geom_bar(aes(fill = predicted_CellType_Broad), position="fill", stat="identity", width=0.7) +
+  scale_fill_manual(values = col.myeloid_zeng, name = NULL) +
+  geom_text(data = totals.prog_zeng, aes(x = stage, y = 1.1, label = paste0('n =\n', total)), size = 2.5) +
+  scale_y_continuous(breaks = seq(0, 1, 0.2), expand = expansion(add = c(0, 0.07))) +
+  ggh4x::facet_nested(. ~  group + patient, nest_line = element_line(linetype = 2), solo_line = F, resect = unit(0.5, "cm")) +
+  cowplot::theme_cowplot() +
+  theme(axis.text.x=element_text(angle = 45, vjust = 1, hjust=1),
+        ggh4x.facet.nestline = element_line(colour = "darkgrey"),
+        strip.background = element_blank(),
+        strip.text = element_text(size = 10),
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 10),
+        legend.text = element_text(size = 10),
+        panel.spacing.x = unit(0.5, "lines"),
+        plot.title = element_text(hjust = 0.5, size = 10)) +
+  labs(x = NULL,
+       y = "Cell Fraction",
+       title = title)
+
+b_prog_zeng
+
+cowplot::save_plot(paste0(output_dir, 'Paired_proportion_myeloid_progenitors_ref_zeng.pdf'), b_prog_zeng, base_width = 7, base_heigh = 4)
+
+```
+
+# Supplementary Figure 5F-G
+
+Plot DEG results between Immature GPR56+ of:
+1. Unmatched VEN/HMA responder vs refractory
+2. Unmatched VEN/HMA responder vs relapse
+
+```{r}
+
+comparisons <- c('responder_vs_refractory','responder_vs_relapse')
+
+responder_vs_refractory_degs <- fread(paste0(input_dir, 'res_responder_vs_refractory_LSC.tsv'))
+responder_vs_relapse_degs <- fread(paste0(input_dir, 'res_responder_vs_relapse_LSC.tsv'))
+
+deg_list <- list(responder_vs_refractory_degs, responder_vs_relapse_degs)
+names(deg_list) <- comparisons
+
+genes_responder_vs_refractory <- c(
+  "BCL2L1", "GFI1B", "MMRN1", "ESAM", "ITGA2B", "TAL1",
+  "GP6", "GP9", "CLEC1B", "THBS1", "PROS1", "VWF",
+  "GP1BA", "MPO", "GFI1", "AXL", "EGR1", "ATF3",
+  "BCL2", "CREBBP", "NFKBIE", "NFKBID", "NFKBIA", "IRF1"
+)
+
+genes_responder_vs_relapse <- c(
+  "MAFF", "BBC3", "KLF2", "JUND", "JUNB", "BCL2",
+  "FOSB", "BARD1", "BRCC3", "PARP1", "TSC1",
+  "RAD18", "APTX", "RAD1"
+)
+
+padj.cutoff <- 0.05
+
+plots_degs <- lapply(comparisons, FUN = function(comparison){
+  
+  if(comparison == 'responder_vs_refractory'){
+    gene.names <- genes_responder_vs_refractory
+  } else {
+    gene.names <- genes_responder_vs_relapse
+  }
+  
+  res <- deg_list[[comparison]]
+  
+  # Plot volcano plot
+  title <- comparison %>%
+    str_split("_vs_") %>%
+    map_chr(~ {
+      parts <- rev(.x)
+      str_c(str_to_title(parts), collapse = " vs ")
+    })
+  
+  # Min and max limits for x axis
+  min.x <- round(min(res$log2FoldChange) - 1.5)
+  max.x <- round(max(res$log2FoldChange) + 1.5)
+  
+  p_volcano <- ggplot(res, aes(x = log2FoldChange, y = -log10(padj))) +
+    geom_point(data = . %>% filter(log2FoldChange > 0 & padj < padj.cutoff), color = '#084594', size = 0.5) +
+    geom_point(data = . %>% filter(log2FoldChange < 0 & padj < padj.cutoff), color = '#FF0000', size = 0.5) +
+    ggrastr::geom_point_rast(data = . %>% filter(padj > padj.cutoff), color = 'lightgrey', size = 0.5) +
+    # positive genes
+    ggrepel::geom_text_repel(data = . %>% filter(log2FoldChange > 0 & padj < padj.cutoff & SYMBOL %in% gene.names),
+                             aes(label = SYMBOL), size = 3,
+                             segment.linetype = 'solid', segment.color = 'black',
+                             nudge_x = 1.5,
+                             nudge_y = 0.5,
+                             max.overlaps = Inf,
+                             direction         = "y",
+                             segment.size      = 0.2) +
+    
+    # negative genes
+    ggrepel::geom_text_repel(data = .%>% filter(log2FoldChange < 0 & padj < padj.cutoff) %>% filter(SYMBOL %in% gene.names),
+                             aes(label = SYMBOL), size = 3,
+                             segment.linetype = 'solid', segment.color = 'black',
+                             nudge_x = -1.5, 
+                             nudge_y = 0.5,
+                             max.overlaps = Inf,
+                             direction         = "y",
+                             segment.size      = 0.2) +
+    xlim(min.x, max.x) +
+    labs(title = title) +
+    theme_pubr() +
+    theme(plot.title = element_text(hjust = 0.5, size = 12)) +
+    geom_vline(xintercept = 0, linetype = 'dashed') +
+    geom_hline(yintercept = -log10(padj.cutoff), linetype = 'dashed') 
+  
+})
+
+plots_degs_all <- plots_degs[[1]] +  plots_degs[[2]]
+
+plots_degs_all
+
+save_plot(paste0(output_dir, 'DEGs_prevv_vs_postvv.pdf'), plots_degs_all, ncol = 2, base_height = 4, base_width = 4)
+
+```
+

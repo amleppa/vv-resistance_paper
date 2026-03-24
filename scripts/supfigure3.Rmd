@@ -1,0 +1,349 @@
+---
+title: "R Notebook - Supplementary Figure 3"
+output:
+  html_document:
+    df_print: paged
+---
+This notebook covers plots in Supplementary Figure 3.
+
+```{r setup, include=FALSE}
+    knitr::opts_knit$set(root.dir = normalizePath('/Users/leppam/dkfz/venetoclax/manuscripts/code_github/')) 
+```
+
+Required packages and directories.
+
+```{r, message=F}
+library(data.table)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(stringr)
+library(forcats)
+library(ggplot2)
+library(ggbeeswarm)
+library(cowplot)
+library(readxl)
+library(broom)
+
+input_dir <- "./input/"
+output_dir <- "./output/"
+
+```
+
+Read in BEAT AML data.
+
+```{r}
+# Normalized expression data
+expr <- fread(paste0(input_dir, 'beataml_waves1to4_norm_exp_dbgap.txt'))
+
+# Clinical data
+df.clinical <- read_excel(paste0(input_dir, 'beataml_wv1to4_clinical.xlsx'), sheet = 'summary', col_types = c('text'))
+
+# Normalized cibersortx deconvolution data
+beat_deconvolution <- fread(paste0(input_dir, 'beat_deconvolution.tsv'), sep = "\t")
+
+# Drug sensitivity data from samples with deconvolution data
+drug_responses <- fread(paste0(input_dir, 'beat_drug_responses.tsv'), sep = "\t")
+
+# Drug families
+df_drug.families <- fread(paste0(input_dir, 'beataml_drug_families.tsv'))
+
+```
+
+# Supplementary Figure 3A
+
+Plot LAMP5 expression in BEAT AML.
+
+```{r, fig.height = 8, fig.width = 8}
+
+# Pattern to detect amplification involving chromosome 8
+amp_chr8_pattern <- "(\\+8|dup\\(8|dup\\(8[pq]|amp\\(8|8[pq]\\+|i\\(8q\\)|hsr\\(8|der\\(8|mar\\(.*8)"
+# Pattern to detect TP53 deletion
+tp53_del_pattern <- "del\\(17p|17p-|-17|del\\(17\\)\\([^\\)]*p13(?:[.0-9]*)?\\)"
+# Pattern for detect t(8;16) 
+trans_chr8_chr16_pattern <- "t\\(8\\;16"
+# Pattern to detect Ras pathway mutations
+ras_pathway_genes <- c("KRAS", "NRAS", "HRAS","BRAF","NF1", "PTPN11")
+ras_pattern <- paste0("(?i)\\b(", paste(ras_pathway_genes, collapse = "|"), ")\\b")
+# Pattern to detect splicing factor mutations
+splice_genes <- c("SF3B1", "SRSF2", "U2AF1", "ZRSR2")
+splice_pattern <- str_c("\\b(", str_c(splice_genes, collapse = "|"), ")\\b")
+
+# Create df for LAMP5 expression with clinical data
+pos.tail <- 3.5
+
+expr.lamp5 <- expr %>%
+  filter(display_label == 'LAMP5') %>%
+  pivot_longer(cols = where(is.numeric), names_to = 'dbgap_sample_id', values_to = 'expr') %>%
+  mutate(group = case_when(expr > pos.tail ~ 'High',
+                                 TRUE ~ 'Low')) %>%
+  # add clinical data
+  left_join(., df.clinical, by = c('dbgap_sample_id' = 'dbgap_rnaseq_sample')) %>%
+  # add information about chromosome 8 amplifications
+  mutate('Dup8' = case_when(str_detect(karyotype, amp_chr8_pattern) ~ 'Yes',
+                              is.na(karyotype) ~ 'Unknown',
+                              TRUE ~ 'No')) %>%
+  # add information about t(8;16) status
+  mutate('t(8;16)' = case_when(str_detect(karyotype, trans_chr8_chr16_pattern) ~ 'Yes',
+                              is.na(karyotype) ~ 'Unknown',
+                              TRUE ~ 'No')) %>%
+  # add information about KMT2A-re status
+  mutate('KMT2A-re' = case_when(str_detect(consensusAMLFusions, 'KMT2A_re') ~ 'Yes',
+                               consensusAMLFusions == ' N/A' ~ 'Unknown',
+                               TRUE ~ 'No')) %>%
+  # add information about tp53 status
+  mutate('-17/-17p13/TP53' = case_when(str_detect(karyotype, tp53_del_pattern) | str_detect(variantSummary, 'TP53') ~ 'Yes',
+                                 is.na(karyotype) | is.na(variantSummary) ~ 'Unknown',
+                                 TRUE ~ 'No')) %>%
+  # add information about common SNVs
+  mutate('IDH1/2' = case_when(str_detect(variantSummary, 'IDH1|IDH2') ~ 'Yes',
+                                is.na(variantSummary) ~ 'Unknown',
+                                TRUE ~ 'No'),
+         ASXL1 = case_when(str_detect(variantSummary, 'ASXL1') ~ 'Yes',
+                               is.na(variantSummary) ~ 'Unknown',
+                               TRUE ~ 'No'),
+         RUNX1 = case_when(str_detect(variantSummary, 'RUNX1') ~ 'Yes',
+                               is.na(variantSummary) ~ 'Unknown',
+                               TRUE ~ 'No'),
+         DNMT3A = case_when(str_detect(variantSummary, 'DNMT3A') ~ 'Yes',
+                               is.na(variantSummary) ~ 'Unknown',
+                               TRUE ~ 'No'),
+         TET2 = case_when(str_detect(variantSummary, 'TET2') ~ 'Yes',
+                               is.na(variantSummary) ~ 'Unknown',
+                               TRUE ~ 'No'),
+         'FLT3-ITD' = case_when(str_detect(variantSummary, 'FLT3-ITD') ~ 'Yes',
+                               is.na(variantSummary) ~ 'Unknown',
+                               TRUE ~ 'No'),
+         NPM1 = case_when(str_detect(variantSummary, 'NPM1') ~ 'Yes',
+                                  is.na(variantSummary) ~ 'Unknown',
+                                  TRUE ~ 'No'),
+         SF = case_when(str_detect(variantSummary, splice_pattern) ~ 'Yes',
+                             is.na(variantSummary) ~ 'Unknown',
+                             TRUE ~ 'No'),
+         RAS = case_when(str_detect(variantSummary, ras_pattern) ~ 'Yes',
+                             is.na(variantSummary) ~ 'Unknown',
+                             TRUE ~ 'No')) %>%
+  # correct typos inconsistenceis in clinical columns
+  mutate(specificDxAtAcquisition = case_when(specificDxAtAcquisition %in% c('unknown', 'Unknown') ~ 'Unknown',
+                                             TRUE ~ specificDxAtAcquisition)) %>%
+  # only keep sample with clinical data
+  filter(!is.na(dbgap_subject_id))
+
+
+# Plot LAMP5 expression in disease subgroups
+# Order specificDxAtAcquisition based on LAMP5 expression
+group.order <- expr.lamp5 %>%
+  group_by(specificDxAtAcquisition) %>%
+  summarise(mean_expr = mean(expr)) %>%
+  arrange(desc(mean_expr)) %>%
+  pull(specificDxAtAcquisition)
+
+p_lamp5 <- expr.lamp5 %>%
+  ggplot(aes(x = factor(specificDxAtAcquisition, levels = group.order), y = expr)) +
+  ggbeeswarm::geom_quasirandom(aes(fill = specificDxAtAcquisition), shape = 21, color = 'black') +
+  geom_hline(yintercept = pos.tail, linetype = 'dashed') +
+  stat_summary(fun.data = "mean_cl_boot", colour = "darkred", linewidth = 0.5, size = 0.5) +
+  labs(
+    title = "LAMP5 expression in disease subgroups",
+    x = NULL,
+    y = "Normalized RPKM"
+  ) +
+  cowplot::theme_cowplot() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        legend.position = 'none')
+
+p_lamp5  
+
+save_plot(paste0(output_dir, 'LAMP5_expr_beat_aml_disease_subgroups.pdf'), p_lamp5, base_height = 8, base_width = 8)
+
+```
+# Supplementary Figure 3B
+
+Plot multivariate linear regression of LAMP5 and genetics.
+
+```{r}
+# Variables to include
+variables <- c('consensus_sex','ageAtSpecimenAcquisition',
+              'Dup8','t(8;16)','-17/-17p13/TP53', 'KMT2A-re',
+              'IDH1/2','ASXL1','RUNX1','DNMT3A','TET2','FLT3-ITD','NPM1','SF','RAS')
+
+# To avoid issues with special characters
+variables_escaped <- str_c("`", variables, "`")
+
+variables_formula <- str_c(variables_escaped, collapse = "+")
+full_formula <- as.formula(paste("expr ~", variables_formula))
+
+# Multiple Linear Regression
+# Remove rows that have NAs for the chosen variables
+expr.lamp5.flt <- expr.lamp5 %>%
+  mutate(ageAtSpecimenAcquisition = as.numeric(ageAtSpecimenAcquisition)) %>%
+  select(all_of(variables), expr) %>%
+  drop_na() %>%
+  # Remove all "Unknown" rows
+  filter(!if_any(everything(), ~ . == "Unknown"))
+
+output <- lm(full_formula, data = expr.lamp5.flt)
+
+summary_dfs <- summary(output)
+
+# Get tidy results
+lmod.tidy <- tidy(output, exponentiate = TRUE, conf.int = TRUE) %>%
+  rename(variable = term, pval = p.value, CI_low = conf.low, CI_high = conf.high) %>%
+  filter(variable != '(Intercept)') %>%
+  mutate(label = case_when(pval < 0.001 ~ "***",
+                           pval < 0.01 ~ "**",
+                           pval < 0.05 ~ "*",
+                           TRUE ~ '')) %>%
+  # clean up variable column
+  mutate(variable = str_remove_all(variable, '`')) %>%
+  mutate(variable = str_remove(variable, 'Yes')) %>%
+  mutate(variable = str_remove(variable, 'consensus_sex')) %>%
+  mutate(variable = str_replace(variable, 'ageAtSpecimenAcquisition', 'Age'))
+
+# Plot Beta Estimate
+p_reg <- lmod.tidy %>%
+  ggplot(aes(x = reorder(variable, estimate), y = estimate)) +
+  geom_point(data = . %>% filter(pval > 0.05), size = 3) +
+  geom_point(data = . %>% filter(pval < 0.05), color = 'darkred', size = 3) +
+  geom_errorbar(data = . %>% filter(pval > 0.05), aes(ymin = CI_low, ymax = CI_high), width = 0.2) +
+  geom_errorbar(data = . %>% filter(pval < 0.05), aes(ymin = CI_low, ymax = CI_high), color = 'darkred', width = 0.2) +
+  geom_text(aes(label = label), hjust = 0.5, vjust = -0.3) +
+  geom_hline(yintercept = 1, linetype = "dashed", color = "gray") +
+  scale_y_log10(breaks = c(0.1, 1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7)) +
+  scale_x_discrete(expand = expansion(0.06,0)) +
+  coord_flip() +
+  cowplot::theme_cowplot() +
+  labs(
+    subtitle = "Linear Model Coefficients",
+    title = 'LAMP5 expression',
+    x = "",
+    y = "Beta Estimate (95% CI)"
+  ) +
+  theme(axis.text.x=element_text(angle=45, hjust=0.5, vjust = 0.5))
+
+p_reg
+
+save_plot(paste0(output_dir, 'LAMP5_expr_beat_aml_linear_regression.pdf'), p_reg, base_height = 5, base_width = 5)
+
+```
+
+# Supplementary Figure 3D
+
+Plot CIBERSORTx deconvolution and ex vivo drug response results.
+
+Ex vivo drug response in AML patient samples from BEAT-AML (Tyler et al. 2018) was measured through the AUC metric where low AUC score represents sensitivity and high score resistance. Acute promyelocytic leukaemia samples were excluded from the analysis. AUC values were scaled and multiplied by −1 to represent sensitivity in each treatment condition. Pearson correlation was used to measure association between cell type abundance and drug sensitivities. 
+
+```{r}
+
+# Function to plot results
+drug_obs_correlations <- function(drug_responses, beat_deconvolution, celltype) {
+  print(celltype)
+  # Make sure rownames are the same between the data frames
+  drug_responses <- drug_responses[rownames(beat_deconvolution), ]
+  print(dim(drug_responses))
+  all(rownames(drug_responses) == rownames(beat_deconvolution))
+  
+  correlations <- data.frame(pearson = numeric(), pvalue = numeric(), Drug = character(), row.names = character(0))
+
+  for (drug in colnames(drug_responses)) {
+    temp <- data.frame(score = beat_deconvolution[, celltype], auc = -as.vector(drug_responses[, drug]))
+    temp <- temp[complete.cases(temp), ]
+    pearson_result <- cor.test(temp$score, temp$auc, method = "pearson")
+    data <- data.frame(pearson = pearson_result$estimate, pvalue = pearson_result$p.value, Drug = drug, row.names = drug)
+    correlations <- rbind(correlations, data)
+  }
+
+  rownames(correlations) <- NULL
+  return(correlations)
+}
+
+# Determine correlations between cell types and drug sensitivity (AUC) in all samples.
+
+drug_responses <- drug_responses %>%
+  column_to_rownames('patient')
+
+beat_deconvolution <- beat_deconvolution %>%
+  column_to_rownames('patient')
+
+results <- data.frame()
+
+celltypes <- c("HSC","LMPP","MEP", "GMP","Mono","ProgDC","pDC","cDC2")
+
+for (celltype in celltypes) {
+  temp <- drug_obs_correlations(drug_responses, beat_deconvolution, celltype)
+  temp$CellType <- celltype
+  results <- rbind(results, temp)
+}
+
+df.correlation <- results
+
+# Perform multiple testing correction and identify significant cell - drug relationships
+df.correlation$FDR <- p.adjust(df.correlation$pvalue, method = "fdr")
+# significantly sensitive at pval < 0.05 and abs(pearson) > 0.3
+sensitive_drugs <- unique(df.correlation$Drug[df.correlation$pvalue < 0.05 & abs(df.correlation$pearson) > 0.3])
+
+df.correlation$logFDR <- log10(df.correlation$FDR)
+df.correlation$CellType <- factor(df.correlation$CellType, levels = c("HSC","LMPP","MEP", "GMP","Mono","ProgDC","pDC","cDC2"))
+
+# Modify tables for plotting
+df_pearson <- df.correlation %>% 
+  filter(Drug %in% sensitive_drugs) %>%
+  select(pearson, CellType, Drug) %>%
+  pivot_wider(names_from = Drug, values_from = pearson) %>%
+  column_to_rownames('CellType')
+
+df_FDR <- df.correlation %>% 
+  filter(Drug %in% sensitive_drugs) %>%
+  select(FDR, CellType, Drug) %>%
+  pivot_wider(names_from = Drug, values_from = FDR) %>%
+  column_to_rownames('CellType')
+
+celltypes <- c("HSC","LMPP","MEP", "GMP","Mono","ProgDC","pDC","cDC2")
+
+family.order <- c("RAF_MEK_ERK","MEK","HDAC","RTK_TIE","RTK_RET","RTK_VEGFRs","RTK_ALK_MET","RTK_TAM","RTK_ERBB","RTK_TYPE_III","BTK_TEC","RTK_INSR_IGF1R","CDK4_6","pan_CDK","PKC","IkK","FAKs","AURK","BCL2","Other")
+
+# Wrangle data
+df_plot <- df.correlation %>% 
+  filter(Drug %in% sensitive_drugs) %>%
+  select(FDR, pearson, CellType, Drug) %>%
+  # Add drug family
+  left_join(., df_drug.families, by = c('Drug' = 'inhibitor'), multiple = 'first') %>%
+  mutate(family = case_when(is.na(family) ~ 'Other',
+                            TRUE ~ family)) %>%
+  mutate(family = factor(family, levels = family.order),
+         CellType = factor(CellType, levels = celltypes),
+         Drug = str_remove(Drug, ' .*')
+         ) %>%
+  mutate(CellType = factor(CellType, levels = celltypes)) %>%
+  mutate(FDR_label = case_when(FDR < 0.05 ~ '*',
+                               TRUE ~ '')
+  )
+
+# Plot
+p_corr <- df_plot %>%
+  mutate(label = paste0(Drug, "|", family)) %>%
+  mutate(label = fct_reorder(label, as.integer(family) * 1000 + as.integer(as.factor(Drug)) )) %>%
+  # Discretize FDR
+  mutate(FDR_group = santoku::chop(FDR, breaks = c(0, 0.01,0.05,1))) %>%
+  ggplot(aes(x = label, y = fct_rev(CellType), size = fct_rev(FDR_group), fill = pearson, label = FDR_label)) +
+  geom_point(shape = 21) +
+  #geom_text(size = 5, nudge_y = -0.15) +
+  #viridis::scale_fill_viridis(option="inferno") +
+  scale_fill_gradient2(low = scales::muted('blue'), mid = munsell::mnsl("N 8/0"), high = scales::muted('red'), space = "Lab") +
+  scale_x_discrete(position = "top") +
+  labs(x = NULL,
+       y = NULL,
+       title = 'BEAT ex vivo response deconvoluted',
+       size = 'FDR',
+       fill = 'cor(abundance, sensitivity)') +
+  guides(x = legendry::guide_axis_nested(key = legendry::key_range_auto(sep = "\\|"), angle = 90, pad_discrete = 0.2)) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.key.size = unit(0.4, "cm"))
+
+p_corr
+
+save_plot(paste0(output_dir, 'Exvivo_response_deconvolution.pdf'), p_corr, base_height = 5, base_width = 8)
+
+```
+

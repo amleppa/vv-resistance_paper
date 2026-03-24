@@ -1,0 +1,308 @@
+Cell	refUMAP_1	refUMAP_2	disease_stage	orig.ident	sample	celltype.l2	batch	predicted.celltype	Mono.LSCs	Response_VV_diagnosis_salvage	Cohort
+HIAML6_lsc1	-4.23237466812134	1.15530681610107	Diagnosis	AML	1	LSC	combined	LMPP	no		Cohort1
+HIAML6_mature1	-6.67491292953491	-0.85169780254364	Diagnosis	AML	1	MATURE	combined	GMP	no		Cohort1
+HIAML7_lsc1-reseq1	-4.61195993423462	1.92918908596039	Diagnosis	AML	2	LSC	combined	LMPP	no	responder	Cohort1
+HIAML7_mature1	-8.1953125	-4.51726484298706	Diagnosis	AML	2	MATURE	combined	CD14 Mono	no	responder	Cohort1
+HIAML12_lsc1-reseq1	-4.12497663497925	1.42036330699921	Diagnosis	AML	3	LSC	combined	LMPP	no		Cohort1
+HIAML12_mature1	-7.86665725708008	-4.55573129653931	Diagnosis	AML	3	MATURE	combined	CD14 Mono	no		Cohort1
+HIAML14_lsc1	-5.13172721862793	1.50725483894348	Diagnosis	AML	4	LSC	combined	LMPP	no	responder	Cohort1
+HIAML14_mature1	-6.49513530731201	-0.622366487979889	Diagnosis	AML	4	MATURE	combined	CD14 Mono	no	responder	Cohort1
+HIAML23_lsc1	-4.4522557258606	1.95643281936646	Diagnosis	AML	5	LSC	combined	HSC	no	responder	Cohort1
+HIAML23_mature1	-7.42217302322388	-3.95124363899231	Diagnosis	AML	5	MATURE	combined	CD14 Mono	no	responder	Cohort1
+HIAML27_lsc1	-5.02866077423096	1.83053505420685	Diagnosis	AML	6	LSC	combined	LMPP	no		Cohort1
+HIAML27_mature1	-7.95152807235718	-4.51464891433716	Diagnosis	AML	6	MATURE	combined	CD14 Mono	no		Cohort1
+HIAML29_lsc1	-5.00572824478149	2.03704881668091	Diagnosis	AML	7	LSC	combined	LMPP	no	responder	Cohort1
+HIAML29_mature1-reseq1	-7.47323751449585	-3.99050092697144	Diagnosis	AML	7	MATURE	combined	CD14 Mono	no	responder	Cohort1
+HIAML30_lsc1	-5.19357395172119	1.5143061876297	Diagnosis	AML	8	LSC	combined	LMPP	no	non_responder	Cohort1
+HIAML30_mature1-reseq1	-8.25594615936279	-5.10814666748047	Diagnosis	AML	8	MATURE	combined	CD14 Mono	no	non_responder	Cohort1
+HIAML33_lsc1	-4.62787866592407	1.31954050064087	Diagnosis	AML	9	LSC	combined	LMPP	no		Cohort1
+HIAML33_mature1	-8.19798278808594	-5.0479302406311	Diagnosis	AML	9	MATURE	combined	CD14 Mono	no		Cohort1
+BAML4_lsc1	-4.5576753616333	1.29944050312042	Diagnosis	AML	10	LSC	combined	LMPP	no		Cohort1
+BAML4_mature1	-7.69390964508057	-4.40135812759399	Diagnosis	AML	10	MATURE	combined	CD14 Mono	no		Cohort1
+BAML3_lsc1	-3.58288931846619	1.31984794139862	Diagnosis	AML	11	LSC	combined	LMPP	no		Cohort1
+BAML3_mature1	-8.34066581726074	-5.23863410949707	Diagnosis	AML	11	MATURE	combined	CD14 Mono	no		Cohort1
+HIAML40_lsc1	-4.51402950286865	1.81374669075012	Diagnosis	AML	12	LSC	combined	LMPP	no		Cohort1
+HIAML40_mature1	-8.74480056762695	-5.12179565429688	Diagnosis	AML	12	MATURE	combined	CD14 Mono	no		Cohort1
+HIAML41_lsc1	-4.32644081115723	2.34987092018127	Diagnosis	AML	13	LSC	combined	HSC	no		Cohort1
+HIAML41_mature1	-8.08541107177734	-4.75707387924194	Diagnosis	AML	13	MATURE	combined	CD14 Mono	no		Cohort1
+P13_lsc-d1	-3.78444004058838	1.4738335609436	Diagnosis	AML	14	LSC	combined	LMPP	no	responder	Cohort1
+HIAML49_lsc1	-4.77598714828491	1.44335031509399	Diagnosis	AML	15	LSC	combined	LMPP	no	responder	Cohort1
+HIAML49_mature1	-7.88395118713379	-4.62592697143555	Diagnosis	AML	15	MATURE	combined	CD14 Mono	no	responder	Cohort1
+HIAML50_lsc1	-3.58475375175476	1.14731574058533	Diagnosis	AML	16	LSC	combined	MEP	no		Cohort1
+HIAML50_mature1	-8.22952365875244	-5.14093685150147	Diagnosis	AML	16	MATURE	combined	CD14 Mono	no		Cohort1
+HIAML58_lsc1	-3.96990156173706	1.63801860809326	Diagnosis	AML	17	LSC	combined	LMPP	no		Cohort1
+HIAML58_mature1	-9.01244735717773	-5.13610649108887	Diagnosis	AML	17	MATURE	combined	CD14 Mono	no		Cohort1
+BAML8_lsc1	-3.56534647941589	1.51530587673187	Diagnosis	AML	18	LSC	combined	MEP	no		Cohort1
+BAML8_mature1	-3.43962478637695	1.54510843753815	Diagnosis	AML	18	MATURE	combined	MEP	no		Cohort1
+HIAML55_lsc1	-4.54178905487061	1.85195124149323	Diagnosis	AML	19	LSC	combined	LMPP	no	responder	Cohort1
+HIAML55_mature1	-8.74698448181152	-4.84571313858032	Diagnosis	AML	19	MATURE	combined	CD14 Mono	no	responder	Cohort1
+AML4_lsc-d1	-3.44998478889465	1.46923792362213	Diagnosis	AML	20	LSC	combined	MEP	yes		Cohort1
+AML4_mature-d1	-8.14229774475098	-0.662963688373566	Diagnosis	AML	20	MATURE	combined	CD14 Mono	yes		Cohort1
+HIAML45_bulk-d1	-4.20121192932129	1.88046908378601	Diagnosis	AML	21	BULK	combined	HSC	no	responder	Cohort1
+AML5_lsc-d1	-4.37505578994751	1.72845685482025	Diagnosis	AML	21	LSC	combined	LMPP	no	responder	Cohort1
+HIAML45_mature-d1	-6.8743109703064	-1.1005882024765	Diagnosis	AML	21	MATURE	combined	CD14 Mono	no	responder	Cohort1
+HIAML45_nonlsc-d1	-4.18483829498291	1.97612226009369	Diagnosis	AML	21	NONLSC	combined	HSC	no	responder	Cohort1
+HIAML15_lsc-d1	-4.65916061401367	1.88735914230347	Diagnosis	AML	22	LSC	combined	LMPP	no	responder	Cohort1
+D22_mature-d1	-8.25560760498047	-4.00613975524902	Diagnosis	AML	22	MATURE	combined	CD14 Mono	no	responder	Cohort1
+HIAML17_lsc-d1	-5.00268411636353	1.42072534561157	Diagnosis	AML	23	LSC	combined	LMPP	no		Cohort1
+P9_lsc-d1	-3.88633060455322	2.64264869689941	Diagnosis	AML	24	LSC	combined	HSC	no	non_responder	Cohort1
+HIAML36_mature-d1	-3.45915818214417	1.36025369167328	Diagnosis	AML	24	MATURE	combined	CD14 Mono	no	non_responder	Cohort1
+HIAML37_lsc-d1	-4.44762468338013	1.79968500137329	Diagnosis	AML	25	LSC	combined	LMPP			Cohort1
+HIAML47_lsc-d1	-4.57381248474121	1.69703614711761	Diagnosis	AML	26	LSC	combined	LMPP	no	non_responder	Cohort1
+HIAML47_mature-d1	-11.8062295913696	-4.49636888504028	Diagnosis	AML	26	MATURE	combined	CD14 Mono	no	non_responder	Cohort1
+HIAML52_lsc-d1	-5.05088233947754	1.54354989528656	Diagnosis	AML	27	LSC	combined	LMPP	no		Cohort1
+HIAML54_lsc-d1	-5.19817686080933	1.24089276790619	Diagnosis	AML	28	LSC	combined	LMPP			Cohort1
+HIAML61_lsc-d1	-4.16086483001709	1.95116686820984	Diagnosis	AML	29	LSC	combined	LMPP	no		Cohort1
+HIAML61_mature-d1	-8.34227848052979	-3.81407475471497	Diagnosis	AML	29	MATURE	combined	CD14 Mono	no		Cohort1
+HIAML62_lsc-d1	-4.78958177566528	1.80537307262421	Diagnosis	AML	30	LSC	combined	LMPP	no	responder	Cohort1
+HIAML62_mature-d1	-7.75323390960693	-4.403724193573	Diagnosis	AML	30	MATURE	combined	CD14 Mono	no	responder	Cohort1
+HIAML65_lsc-d1	-5.11193752288818	1.99126291275024	Diagnosis	AML	31	LSC	combined	LMPP	no	responder	Cohort1
+HIAML76_lsc-d1	-4.5371675491333	1.96956896781921	Diagnosis	AML	33	LSC	combined	LMPP	no	responder	Cohort1
+HIAML76_mature-d1	-6.98402547836304	-0.163692459464073	Diagnosis	AML	33	MATURE	combined	CD14 Mono	no	responder	Cohort1
+HIAML79_lsc-d1	-3.42593932151794	1.37878286838532	Diagnosis	AML	34	LSC	combined	MEP			Cohort1
+HIAML83_lsc-d1	-4.68403100967407	1.84824883937836	Diagnosis	AML	36	LSC	combined	LMPP	no	responder	Cohort1
+HIAML84_lsc-d1	-5.14563226699829	1.54974162578583	Diagnosis	AML	37	LSC	combined	LMPP	no	responder	Cohort1
+HIAML84_mature-d1	-6.44901895523071	-0.556358873844147	Diagnosis	AML	37	MATURE	combined	GMP	no	responder	Cohort1
+HIAML85_lsc-d1	-4.14274263381958	2.54211044311523	Salvage	AML	38	LSC	combined	HSC	no	non_responder	Cohort1
+HIAML85_mature-d1	-7.84447336196899	-4.48708581924439	Salvage	AML	38	MATURE	combined	CD14 Mono	no	non_responder	Cohort1
+HIAML87_lsc-d1	-4.65943813323975	1.54028689861298	Diagnosis	AML	39	LSC	combined	LMPP	no	responder	Cohort1
+D40_lsc-d1	-3.37953090667725	1.04335963726044	Diagnosis	AML	40	LSC	combined	MEP		non_responder	Cohort1
+D40_mature-d1	-8.02006816864014	-3.62269377708435	Diagnosis	AML	40	MATURE	combined	CD14 Mono		non_responder	Cohort1
+D41_lsc-d1	-3.72431302070618	1.43440115451813	Diagnosis	AML	41	LSC	combined	MEP	no	responder	Cohort1
+D41_mature-d1	-9.96816635131836	-4.52114105224609	Diagnosis	AML	41	MATURE	combined	CD14 Mono	no	responder	Cohort1
+D42_lsc-d1	-3.14655208587647	0.884329795837402	Diagnosis	AML	42	LSC	combined	MEP	no	responder	Cohort1
+D42_mature-d1	-7.2076210975647	-0.852247297763825	Diagnosis	AML	42	MATURE	combined	CD14 Mono	no	responder	Cohort1
+D43_lsc-d1	-3.2061026096344	0.932947754859924	Diagnosis	AML	43	LSC	combined	MEP	yes	non_responder	Cohort1
+D43_mature-d1	-6.62938785552979	-0.760179281234741	Diagnosis	AML	43	MATURE	combined	LMPP	yes	non_responder	Cohort1
+HIAML88_lsc-d1	-3.44925689697266	1.51770877838135	Diagnosis	AML	44	LSC	combined	MEP	no		Cohort1
+HIAML89_lsc-d1	-2.30234384536743	0.23949958384037	Diagnosis	AML	45	LSC	combined	MEP	no		Cohort1
+HIAML92_lsc-d1	-3.52530288696289	1.12464869022369	Diagnosis	AML	46	LSC	combined	MEP	no	non_responder	Cohort1
+HIAML95_lsc-d1	-3.49370193481445	1.49511897563934	Diagnosis	AML	48	LSC	combined	MEP	no	responder	Cohort1
+HIAML95_mature-d1	-8.75712013244629	-4.36943912506104	Diagnosis	AML	48	MATURE	combined	CD14 Mono	no	responder	Cohort1
+HIAML13_lsc-d1	-3.13290023803711	0.975504279136658	Diagnosis	AML	49	LSC	combined	MEP	yes		Cohort1
+HIAML13_mature-d1	-6.92062711715698	-0.31184583902359	Diagnosis	AML	49	MATURE	combined	GMP	yes		Cohort1
+Hanover3_bulk-d1	-4.30002021789551	1.64790809154511	Diagnosis	AML	50	BULK	combined	LMPP	no	responder	Cohort1
+Hanover3_lsc-d1	-3.96734070777893	1.4924019575119	Diagnosis	AML	50	LSC	combined	LMPP	no	responder	Cohort1
+Hanover3_mature-d1	-7.19351482391357	-0.361618459224701	Diagnosis	AML	50	MATURE	combined	GMP	no	responder	Cohort1
+Hanover3_nonlsc-d1	-4.61894607543945	1.6579612493515	Diagnosis	AML	50	NONLSC	combined	LMPP	no	responder	Cohort1
+D51_lsc-d1	-4.6134181022644	1.66721332073212	Diagnosis	AML	51	LSC	combined	LMPP		responder	Cohort1
+D52_lsc-d1	-4.3606538772583	1.93184161186218	Diagnosis	AML	52	LSC	combined	HSC		responder	Cohort1
+D52_mature-d1	-8.33458995819092	-5.44915390014648	Diagnosis	AML	52	MATURE	combined	CD14 Mono		responder	Cohort1
+D53_lsc-d1	-3.99628233909607	2.33191251754761	Diagnosis	AML	53	LSC	combined	HSC		non_responder	Cohort1
+D55_lsc-d1	-5.5712480545044	5.32055425643921	Diagnosis	AML	55	LSC	combined	LMPP		non_responder	Cohort1
+D56_lsc-d1	-4.91967868804932	1.2176673412323	Diagnosis	AML	56	LSC	combined	LMPP			Cohort1
+D57_lsc-d1	-3.30431699752808	0.89242023229599	Diagnosis	AML	57	LSC	combined	MEP	no	non_responder	Cohort1
+D57_mature-d1	-8.23903179168701	-4.7384877204895	Diagnosis	AML	57	MATURE	combined	CD14 Mono	no	non_responder	Cohort1
+D58_lsc-d1	-4.37805986404419	2.10709190368652	Diagnosis	AML	58	LSC	combined	HSC	no	responder	Cohort1
+D59_lsc-d1	-4.22591876983643	1.87432539463043	Diagnosis	AML	59	LSC	combined	LMPP		responder	Cohort1
+D60_lsc-d1	-3.44458770751953	1.03985512256622	Diagnosis	AML	60	LSC	combined	LMPP	no	responder	Cohort1
+D61_lsc-d1	-4.35451936721802	2.19530749320984	Diagnosis	AML	61	LSC	combined	HSC		responder	Cohort1
+D62_lsc-d1	-4.19343185424805	2.00589966773987	Diagnosis	AML	62	LSC	combined	HSC		responder	Cohort1
+D62_mature-d1	-9.331467628479	-4.48827743530273	Diagnosis	AML	62	MATURE	combined	CD14 Mono		responder	Cohort1
+D63_lsc-d1	-5.03011131286621	1.7854905128479	Diagnosis	AML	63	LSC	combined	LMPP	no	non_responder	Cohort1
+D64_lsc-d1	-3.47976779937744	1.56471467018127	Diagnosis	AML	64	LSC	combined	MEP		responder	Cohort1
+D65_lsc-d1	-3.95388984680176	1.59066581726074	Diagnosis	AML	65	LSC	combined	LMPP		responder	Cohort1
+D65_mature-d1	-9.66977500915527	-4.41450548171997	Diagnosis	AML	65	MATURE	combined	CD14 Mono		responder	Cohort1
+D66_lsc-d1	-3.56494784355164	1.27943384647369	Diagnosis	AML	66	LSC	combined	MEP		non_responder	Cohort1
+D67_lsc-d1	-3.43737459182739	1.59089398384094	Diagnosis	AML	67	LSC	combined	MEP		responder	Cohort1
+D68_lsc-d1	-3.32841157913208	1.65791356563568	Diagnosis	AML	68	LSC	combined	LMPP		responder	Cohort1
+D69_lsc-d1	-3.31272077560425	1.5066887140274	Diagnosis	AML	69	LSC	combined	MEP		responder	Cohort1
+D69_mature-d1	-3.44964623451233	1.59675300121307	Diagnosis	AML	69	MATURE	combined	MEP		responder	Cohort1
+D71_lsc-d1	-3.47775506973267	0.998768270015717	Diagnosis	AML	71	LSC	combined	MEP	no	responder	Cohort1
+D72_lsc-d1	-5.19273662567139	1.2257239818573	Diagnosis	AML	72	LSC	combined	LMPP		responder	Cohort1
+D74_lsc-d1	-3.34020376205444	1.18329310417175	Diagnosis	AML	74	LSC	combined	MEP		responder	Cohort1
+D77_lsc-d1	-4.58930730819702	2.09896183013916	Diagnosis	AML	77	LSC	combined	LMPP		responder	Cohort1
+D78_lsc-d1	-4.77797794342041	1.91869115829468	Diagnosis	AML	78	LSC	combined	LMPP		responder	Cohort1
+D79_lsc-d1	-4.49654626846314	2.08834481239319	Diagnosis	AML	79	LSC	combined	LMPP		responder	Cohort1
+D79_mature-d1	-8.34550857543945	-4.93915557861328	Diagnosis	AML	79	MATURE	combined	CD14 Mono		responder	Cohort1
+D80_lsc-d1	-2.88842606544495	0.555577695369721	Diagnosis	AML	80	LSC	combined	LMPP		responder	Cohort1
+D81_lsc-d1	-3.42559051513672	1.48881340026855	Diagnosis	AML	81	LSC	combined	MEP		responder	Cohort1
+D82_lsc-d1	-4.54493188858032	2.03891515731812	Diagnosis	AML	82	LSC	combined	LMPP		responder	Cohort1
+HIAML96_lsc-d1	-4.70232534408569	1.95064043998718	Diagnosis	AML	83	LSC	combined	LMPP	no	responder	Cohort1
+HIAML97_lsc-d1	-4.79742002487183	1.7066034078598	Diagnosis	AML	84	LSC	combined	LMPP	no	responder	Cohort1
+HIAML98_lsc-d1	-3.43251776695251	1.55073380470276	Diagnosis	AML	85	LSC	combined	MEP	no	responder	Cohort1
+R10_lsc-rr1	-4.57635593414307	1.18436753749847	Salvage	AML	R10	LSC	combined	LMPP	no	non_responder	Cohort1
+R11_lsc-rr1	-4.00383043289185	1.1222927570343	Salvage	AML	R11	LSC	combined	LMPP		responder	Cohort1
+R11_mature-rr1	-8.46956443786621	-4.62000894546509	Salvage	AML	R11	MATURE	combined	CD14 Mono		responder	Cohort1
+R3_lsc-rr1	-4.43977355957031	1.51636362075806	Salvage	AML	R3	LSC	combined	LMPP		responder	Cohort1
+R4_lsc-rr1	-3.98448848724365	1.80040848255157	Salvage	AML	R4	LSC	combined	HSC		responder	Cohort1
+R5_lsc-rr1	-3.25189304351807	1.12625646591187	Salvage	AML	R5	LSC	combined	MEP	no	non_responder	Cohort1
+R6_lsc-rr1	-2.70808792114258	0.575908064842224	Salvage	AML	R6	LSC	combined	MEP	no	responder	Cohort1
+R7_mature-rr1	-6.14877033233643	0.344710797071457	Salvage	AML	R7	MATURE	combined	LMPP	yes	non_responder	Cohort1
+R8_lsc-rr1	-3.541659116745	1.41996347904205	Salvage	AML	R8	LSC	combined	MEP	no	non_responder	Cohort1
+R9_lsc-rr1	-4.47850942611694	1.49867177009583	Salvage	AML	R9	LSC	combined	LMPP	no	responder	Cohort1
+P10_lsc-r1	-3.21913552284241	0.789191901683807	Refractory	AML	P10R	LSC	combined	MEP			Cohort1
+P11_lsc-d1	-3.97718715667725	2.35193204879761	Diagnosis	AML	P11D	LSC	combined	HSC	no	non_responder	Cohort1
+P11_lsc-r1	-3.85872626304626	2.60465574264526	Refractory	AML	P11R	LSC	combined	HSC	no		Cohort1
+P12_lsc-r1	-4.65482759475708	1.37348651885986	Relapse	AML	P12R	LSC	combined	LMPP			Cohort1
+P13_lsc-r1	-3.62715005874634	1.54000854492188	Relapse	AML	P13R	LSC	combined	MEP	no		Cohort1
+P14_lsc-d1	-2.79717588424683	0.580403208732605	Diagnosis	AML	P14D	LSC	combined	MEP	no	non_responder	Cohort1
+P14_mature-d1	-7.50618553161621	-0.589780926704407	Diagnosis	AML	P14D	MATURE	combined	CD14 Mono	no	non_responder	Cohort1
+P14_lsc-r1	-3.45469760894775	1.02505278587341	Refractory	AML	P14R	LSC	combined	MEP	no		Cohort1
+P14_mature-r1	-7.4710865020752	-0.0852804109454155	Refractory	AML	P14R	MATURE	combined	CD14 Mono	no		Cohort1
+P15_lsc-d1	-3.51078748703003	1.44382166862488	Diagnosis	AML	P15D	LSC	combined	MEP	no		Cohort1
+P16_lsc-r1	-2.11958527565002	0.0543600805103779	Refractory	AML	P16R	LSC	combined	MEP	yes		Cohort1
+P16_mature-r1	-6.64187002182007	-0.64329594373703	Refractory	AML	P16R	MATURE	combined	GMP	yes		Cohort1
+P17_lsc-d1	-4.44380283355713	1.94626116752625	Diagnosis	AML	P17D	LSC	combined	HSC		non_responder	Cohort1
+P17_lsc-r1	-4.43706846237183	1.68188083171844	Refractory	AML	P17R	LSC	combined	LMPP	no		Cohort1
+P18_lsc-r1	-2.11097645759583	-0.169046461582184	Relapse	AML	P18R	LSC	combined	MEP			Cohort1
+P18_mature-r1	-8.67366409301758	-4.94542789459229	Relapse	AML	P18R	MATURE	combined	CD14 Mono			Cohort1
+P19_lsc-d1	-3.96371102333069	1.69430911540985	Diagnosis	AML	P19D	LSC	combined	LMPP	no	non_responder	Cohort1
+P19_lsc-r1	-3.40799450874329	1.38178157806396	Refractory	AML	P19R	LSC	combined	MEP	no		Cohort1
+HIAML45_bulk-r1	-4.9946780204773	1.48095238208771	Relapse	AML	P1R	BULK	combined	LMPP	no		Cohort1
+HIAML45_lsc-r1	-4.83985996246338	1.38968706130981	Relapse	AML	P1R	LSC	combined	LMPP	no		Cohort1
+HIAML45_mature-r1	-8.69743156433106	-4.65830945968628	Relapse	AML	P1R	MATURE	combined	CD14 Mono	no		Cohort1
+HIAML45_nonlsc-r1	-5.34679460525513	4.76421737670898	Relapse	AML	P1R	NONLSC	combined	LMPP	no		Cohort1
+HIAML22_bulk-d1	-3.9265878200531	1.58338558673859	Diagnosis	AML	P2D	BULK	combined	LMPP	no	non_responder	Cohort1
+HIAML22_lsc-d1	-3.80442023277283	1.496342420578	Diagnosis	AML	P2D	LSC	combined	MEP	no	non_responder	Cohort1
+HIAML22_nonlsc-d1	-3.94216895103455	1.26490020751953	Diagnosis	AML	P2D	NONLSC	combined	LMPP	no	non_responder	Cohort1
+HIAML22_bulk-r1	-3.55192518234253	1.49644768238068	Refractory	AML	P2R	BULK	combined	MEP	no		Cohort1
+HIAML22_lsc-r1	-3.45848774909973	1.50516128540039	Refractory	AML	P2R	LSC	combined	MEP	no		Cohort1
+HIAML22_mature-r1	-7.35012817382813	-8.62699508666992	Refractory	AML	P2R	MATURE	combined	CD14 Mono	no		Cohort1
+HIAML22_nonlsc-r1	-3.43625140190125	1.53396093845367	Refractory	AML	P2R	NONLSC	combined	MEP	no		Cohort1
+HIAML21_bulk-d1	-4.3222484588623	1.03009831905365	Diagnosis	AML	P3D	BULK	combined	LMPP	no	non_responder	Cohort1
+HIAML21_lsc-d1	-3.48065543174744	1.54598522186279	Diagnosis	AML	P3D	LSC	combined	MEP	no	non_responder	Cohort1
+HIAML21_mature-d1	-8.10468101501465	-6.4241509437561	Diagnosis	AML	P3D	MATURE	combined	CD14 Mono	no	non_responder	Cohort1
+HIAML21_nonlsc-d1	-8.36917209625244	-4.23701524734497	Diagnosis	AML	P3D	NONLSC	combined	CD14 Mono	no	non_responder	Cohort1
+HIAML21_bulk-r1	-4.99384117126465	1.2545257806778	Refractory	AML	P3R	BULK	combined	LMPP	no		Cohort1
+HIAML21_lsc-r1	-5.04801750183106	1.9753520488739	Refractory	AML	P3R	LSC	combined	LMPP	no		Cohort1
+HIAML21_mature-r1	-8.13972568511963	-5.17254257202148	Refractory	AML	P3R	MATURE	combined	CD14 Mono	no		Cohort1
+HIAML21_nonlsc-r1	-4.92459678649902	1.13361489772797	Refractory	AML	P3R	NONLSC	combined	LMPP	no		Cohort1
+Hanover2_bulk-d1	-5.18675899505615	1.27264046669006	Diagnosis	AML	P5D	BULK	combined	LMPP	no	non_responder	Cohort1
+Hanover2_lsc-d1	-5.00818204879761	1.35974669456482	Diagnosis	AML	P5D	LSC	combined	LMPP	no	non_responder	Cohort1
+Hanover2_nonlsc-d1	-4.8112735748291	1.18798398971558	Diagnosis	AML	P5D	NONLSC	combined	LMPP	no	non_responder	Cohort1
+Hanover2_bulk-r1	-4.14469432830811	1.27606976032257	Refractory	AML	P5R	BULK	combined	LMPP	no		Cohort1
+Hanover2_lsc-r1	-4.95547342300415	1.24846518039703	Refractory	AML	P5R	LSC	combined	LMPP	no		Cohort1
+Hanover2_mature-r1	-3.49520301818848	1.41530179977417	Refractory	AML	P5R	MATURE	combined	MEP	no		Cohort1
+Hanover2_nonlsc-r1	-4.81477451324463	1.51070129871368	Refractory	AML	P5R	NONLSC	combined	LMPP	no		Cohort1
+Hanover3_bulk-r1	-4.05785036087036	1.77418398857117	Relapse	AML	P6R	BULK	combined	HSC	no		Cohort1
+Hanover3_lsc-r1	-3.34614109992981	1.3016664981842	Relapse	AML	P6R	LSC	combined	MEP	no		Cohort1
+Hanover3_mature-r1	-7.2094874382019	-0.89534991979599	Relapse	AML	P6R	MATURE	combined	CD14 Mono	no		Cohort1
+Hanover3_nonlsc-r1	-3.97881984710693	2.0295889377594	Relapse	AML	P6R	NONLSC	combined	HSC	no		Cohort1
+Hanover4_bulk-d1	-1.99285018444061	0.0139374006539583	Diagnosis	AML	P7D	BULK	combined	GMP		non_responder	Cohort1
+Hanover4_lsc-d1	-7.01114940643311	2.4316771030426	Diagnosis	AML	P7D	MATURE	combined	CD14 Mono		non_responder	Cohort1
+Hanover4_mature-d1	-2.08635520935059	-0.0982444509863853	Diagnosis	AML	P7D	LSC	combined	MEP		non_responder	Cohort1
+Hanover4_nonlsc-d1	-5.76314496994019	0.847281217575073	Diagnosis	AML	P7D	NONLSC	combined	LMPP		non_responder	Cohort1
+Hanover4_bulk-r1	-5.38494062423706	1.97025108337402	Refractory	AML	P7R	BULK	combined	LMPP	no		Cohort1
+Hanover4_lsc-r1	-4.9318585395813	1.64725852012634	Refractory	AML	P7R	LSC	combined	LMPP	no		Cohort1
+Hanover4_nonlsc-r1	-5.26201772689819	1.58045470714569	Refractory	AML	P7R	NONLSC	combined	LMPP	no		Cohort1
+P9_lsc-r1	-3.44155788421631	1.47316205501556	Refractory	AML	P9R	LSC	combined	MEP	no		Cohort1
+Hanover4_mature-r1	-4.78290224075317	1.18193483352661	Refractory	AML	P7R	MATURE	combined	LMPP	no		Cohort1
+P13_mature-d1	-8.30175495147705	-5.01991891860962	Diagnosis	P13	14	MATURE	combined	CD14 Mono	no	responder	Cohort2
+D44_mature-d1	-7.79040145874023	-4.29514360427856	Diagnosis	D44	44	MATURE	combined	CD14 Mono	no		Cohort2
+D55_mature-d1	-6.83456182479858	-2.02892708778381	Diagnosis	D55	55	MATURE	combined	CD14 Mono		non_responder	Cohort2
+D59_mature-d1	-8.4463701248169	-5.14244222640991	Diagnosis	D59	59	MATURE	combined	CD14 Mono		responder	Cohort2
+D60_mature-d1	-7.3039026260376	-0.905471086502075	Diagnosis	D60	60	MATURE	combined	GMP	no	responder	Cohort2
+D61_mature-d1	-7.32422351837158	2.74715185165405	Diagnosis	D61	61	MATURE	combined	CD14 Mono		responder	Cohort2
+D63_mature-d1	-6.93354272842407	-3.14273285865784	Diagnosis	D63	63	MATURE	combined	CD14 Mono	no	non_responder	Cohort2
+D66_mature-d1	-6.79873752593994	-0.761378407478333	Diagnosis	D66	66	MATURE	combined	CD14 Mono		non_responder	Cohort2
+D71_mature-d1	-8.71169376373291	-5.24998188018799	Diagnosis	D71	71	MATURE	combined	CD14 Mono	no	responder	Cohort2
+P22_lsc-d1	-3.54122471809387	1.6748685836792	Diagnosis	P22	75	LSC	combined	MEP		non_responder	Cohort2
+P22D_mature-d1	-5.1182451248169	1.22054064273834	Diagnosis	P22D	75	MATURE	combined	LMPP		non_responder	Cohort2
+D78_mature-d1	-5.0774827003479	1.8211088180542	Diagnosis	D78	78	MATURE	combined	CD14 Mono		responder	Cohort2
+D80_mature-d1	-8.59041118621826	-4.88568782806397	Diagnosis	D80	80	MATURE	combined	CD14 Mono		responder	Cohort2
+D81_mature-d1	-7.80778217315674	-4.33305072784424	Diagnosis	D81	81	MATURE	combined	CD14 Mono		responder	Cohort2
+D83_mature-d1	-7.87269449234009	-4.50141906738281	Diagnosis	D83	83	MATURE	combined	CD14 Mono	no	responder	Cohort2
+D87_lsc-d1	-3.41620182991028	1.46665728092194	Diagnosis	D87	87	LSC	combined	MEP			Cohort2
+D87_mature-d1	-8.3428258895874	-5.40147495269775	Diagnosis	D87	87	MATURE	combined	CD14 Mono			Cohort2
+D88_lsc-d1	-4.33473587036133	2.18200373649597	Diagnosis	D88	88	LSC	combined	LMPP	no	responder	Cohort2
+D88_mature-d1	-7.48787689208984	-7.55896806716919	Diagnosis	D88	88	MATURE	combined	CD14 Mono	no	responder	Cohort2
+D89_lsc-d1	-4.79640483856201	1.91215181350708	Diagnosis	D89	89	LSC	combined	LMPP	no	responder	Cohort2
+D89_mature-d1	-6.61844491958618	-0.413566201925278	Diagnosis	D89	89	MATURE	combined	LMPP	no	responder	Cohort2
+D93_lsc-d1	-3.093674659729	0.972963154315948	Diagnosis	D93	93	LSC	combined	MEP	no	responder	Cohort2
+D93_mature-d1	-7.57907438278198	-3.70988535881043	Diagnosis	D93	93	MATURE	combined	CD14 Mono	no	responder	Cohort2
+D94_lsc-d1	-5.01163864135742	1.66443359851837	Diagnosis	D94	94	LSC	combined	LMPP	no	responder	Cohort2
+D95_lsc-d1	-3.93777441978455	1.37880337238312	Diagnosis	D95	95	LSC	combined	LMPP	no	responder	Cohort2
+D97_lsc-d1	-3.354736328125	1.1301441192627	Diagnosis	D97	97	LSC	combined	MEP	no		Cohort2
+D98_lsc-d1	-3.44886326789856	1.435551404953	Diagnosis	D98	99	LSC	combined	MEP	no	non_responder	Cohort2
+D99_mature-d1	-7.62114524841309	-4.03900957107544	Diagnosis	D99	98	MATURE	combined	CD14 Mono	no		Cohort2
+D100_lsc-d1	-2.49302577972412	0.483830034732819	Diagnosis	D100	100	LSC	combined	MEP	no		Cohort2
+D104_lsc-d1	-2.83233785629272	1.23575329780579	Diagnosis	D104	104	LSC	combined	LMPP		responder	Cohort2
+D106_lsc-d1	-5.14693069458008	1.18552684783936	Diagnosis	D106	106	LSC	combined	LMPP			Cohort2
+D107_lsc-d1	-2.76377725601196	0.69579541683197	Diagnosis	D107	107	LSC	combined	MEP		responder	Cohort2
+D115_lsc-d1	-3.48787879943848	1.3434020280838	Diagnosis	D115	115	LSC	combined	MEP	no	responder	Cohort2
+D116_bulk-d1	-4.55104494094849	1.80162727832794	Diagnosis	D116	116	BULK	combined	LMPP		responder	Cohort2
+D120_lsc-d1	-1.78723502159119	-0.307991296052933	Diagnosis	D120	120	LSC	combined	MEP		responder	Cohort2
+D121_lsc-d1	-4.37345933914185	1.86064779758453	Diagnosis	D121	121	LSC	combined	LMPP		responder	Cohort2
+D123_mature-d1	-9.08958530426025	-5.02597045898438	Diagnosis	D123	123	MATURE	combined	CD14 Mono	no	responder	Cohort2
+D124_lsc-d1	-5.03496026992798	1.22451829910278	Diagnosis	D124	124	LSC	combined	LMPP	no	responder	Cohort2
+D124_mature-d1	-6.55413627624512	-1.2833651304245	Diagnosis	D124	124	MATURE	combined	CD14 Mono	no	responder	Cohort2
+D129_lsc-d1	-2.40439629554749	0.359760761260986	Diagnosis	D129	129	LSC	combined	MEP	no		Cohort2
+R13_lsc-r1	-3.61246967315674	1.4580055475235	Relapse	R13	R13	LSC	combined	MEP			Cohort2
+R16_lsc-r1	-3.82733988761902	1.6092357635498	Refractory	R16	R16	LSC	combined	MEP	no		Cohort2
+R18_lsc-r1	-4.71849060058594	2.04541730880737	Salvage	R18	R18	LSC	combined	LMPP	no		Cohort2
+R19_lsc-r1	-3.40796589851379	1.51463258266449	Refractory	R19	R19	LSC	combined	MEP	no		Cohort2
+R20_lsc-r1	-5.0762619972229	1.63249051570892	Salvage	R20	R20	LSC	combined	LMPP	no	responder	Cohort2
+R26_lsc-r1	-3.86191391944885	1.16422986984253	Salvage	R26	R26	LSC	combined	MEP	no	non_responder	Cohort2
+P15_mature-d1	-7.04487180709839	-3.35136127471924	Diagnosis	P15	P15D	MATURE	combined	CD14 Mono	no		Cohort2
+P22_lsc-r1	-3.61656713485718	1.04001665115356	Relapse	P22	P22R	LSC	combined	LMPP			Cohort2
+P24_lsc-r1	-4.80068731307983	1.30830800533295	Relapse	P24	P24R1	LSC	combined	LMPP	no		Cohort2
+P24_lsc-r2	-3.41977286338806	1.19629335403442	Refractory	P24	P25R	LSC	combined	MEP			Cohort2
+D105_lsc-d1	-2.93074417114258	0.690940797328949	Diagnosis	D105	105	LSC	combined	MEP	no		Cohort2
+D109_lsc-d1	-3.1806378364563	0.644098997116089	Diagnosis	D109	109	LSC	combined	MEP	no	responder	Cohort2
+D116_lsc-d1	-4.62311935424805	2.03109645843506	Diagnosis	D116	116	LSC	combined	LMPP		responder	Cohort2
+D119_lsc-d1	-3.43443727493286	1.5008944272995	Diagnosis	D119	119	LSC	combined	MEP		responder	Cohort2
+D126_lsc-d1	-4.76640319824219	1.6911119222641	Diagnosis	D126	126	LSC	combined	LMPP	no	responder	Cohort2
+D126_mature-d1	-7.22850799560547	-0.821213245391846	Diagnosis	D126	126	MATURE	combined	GMP	no	responder	Cohort2
+D127_lsc-d1	-4.58022689819336	2.15510034561157	Diagnosis	D127	127	LSC	combined	LMPP	no	responder	Cohort2
+D128_mature-d1	-7.48686122894287	-0.00858525931835175	Diagnosis	D128	128	MATURE	combined	CD14 Mono	yes	non_responder	Cohort2
+D129_mature-d1	-7.42307472229004	-0.868028044700623	Diagnosis	D129	129	MATURE	combined	GMP	no		Cohort2
+D147_mature-d1	-6.88665390014648	-0.864724040031433	Diagnosis	D147	147	MATURE	combined	GMP	no	responder	Cohort2
+R21_lsc-r1	-3.17269396781921	0.765569269657135	Relapse	R21	R21	LSC	combined	MEP	no		Cohort2
+R22_lsc-r1	-3.48801469802856	1.5983225107193	Refractory	R22	R22	LSC	combined	MEP	no		Cohort2
+R22_mature-r1	-8.14184093475342	-5.74756288528442	Refractory	R22	R22	MATURE	combined	CD14 Mono	no		Cohort2
+R23_lsc-r1	-5.19768762588501	1.41673946380615	Relapse	R23	R23	LSC	combined	LMPP	no		Cohort2
+R23_mature-r1	-8.1583309173584	-4.9424204826355	Relapse	R23	R23	MATURE	combined	CD14 Mono	no		Cohort2
+R24_lsc-r1	-4.19215774536133	1.61447560787201	Relapse	R24	R24	LSC	combined	LMPP	no		Cohort2
+P26_mature-r1	-9.13900375366211	-4.46445083618164	Relapse	P26	R25	MATURE	combined	CD14 Mono	no		Cohort2
+P26_lsc-d1	-4.99578523635864	1.47057604789734	Diagnosis	P26	P26D	LSC	combined	LMPP	N/A	responder	Cohort2
+P26_mature-d1	-8.36141109466553	-5.61966037750244	Diagnosis	P26	P26D	MATURE	combined	CD14 Mono	N/A	responder	Cohort2
+P27_mature-d1	-9.89619731903076	-5.15965270996094	Diagnosis	P27	P27D	MATURE	combined	CD14 Mono		responder	Cohort2
+B8_lmpp-d1	-3.44296741485596	1.08336317539215	Diagnosis	B8	18	LMPP	combined	MEP	no		Cohort2
+B8_mep-d1	-3.58390045166016	1.44110953807831	Diagnosis	B8	18	MEP	combined	MEP	no		Cohort2
+D51_mature-d1	-7.14555931091309	-1.12340068817139	Diagnosis	D51	51	MATURE	combined	GMP		responder	Cohort2
+D53_mature-d1	-7.83247470855713	-4.88691568374634	Diagnosis	D53	53	MATURE	combined	CD14 Mono		non_responder	Cohort2
+D64_mature-d1	-3.4475884437561	1.61508011817932	Diagnosis	D64	64	MATURE	combined	MEP		responder	Cohort2
+D67_mature-d1	-3.43831706047058	1.46290040016174	Diagnosis	D67	67	MATURE	combined	MEP		responder	Cohort2
+D74_mature-d1	-3.52435731887817	1.40197813510895	Diagnosis	D74	74	MATURE	combined	MEP		responder	Cohort2
+D77_mature-d1	-7.45786809921265	-3.93824529647827	Diagnosis	D77	77	MATURE	combined	CD14 Mono		responder	Cohort2
+D85_mature-d1	-7.03905630111694	-2.88895297050476	Diagnosis	D85	85	MATURE	combined	CD14 Mono	no	responder	Cohort2
+D91_lsc-d1-rep2	-6.41100549697876	-0.746023952960968	Diagnosis	D91	91	LSC	combined	LMPP	no	non_responder	Cohort2
+D91_mature-d1-rep2	-6.53777551651001	-1.1620010137558	Diagnosis	D91	91	MATURE	combined	CD14 Mono	no	non_responder	Cohort2
+D99_lsc-d1	-3.7793333530426	1.55699479579926	Diagnosis	D99	98	LSC	combined	MEP	no		Cohort2
+D101_lsc-d1	-3.48280572891235	1.27668833732605	Diagnosis	D101	101	LSC	combined	MEP	no	responder	Cohort2
+D101_mature-d1	-8.41949462890625	-4.9967041015625	Diagnosis	D101	101	MATURE	combined	CD14 Mono	no	responder	Cohort2
+D110_lsc-d1	-5.01516103744507	1.5211193561554	Diagnosis	D110	110	LSC	combined	LMPP		responder	Cohort2
+D115_mature-d1	-3.68311500549316	1.54383087158203	Diagnosis	D115	115	MATURE	combined	MEP	no	responder	Cohort2
+D118_lsc-d1	-3.43189024925232	1.57751977443695	Diagnosis	D118	118	LSC	combined	MEP	no	responder	Cohort2
+D118_mature-d1	-3.6244809627533	1.42536294460297	Diagnosis	D118	118	MATURE	combined	MEP	no	responder	Cohort2
+D119_mature-d1	-3.41516423225403	1.73546957969666	Diagnosis	D119	119	MATURE	combined	MEP		responder	Cohort2
+D120_mature-d1	-8.07882499694824	-4.99974298477173	Diagnosis	D120	120	MATURE	combined	CD14 Mono		responder	Cohort2
+D121_mature-d1	-6.45707416534424	-1.91585159301758	Diagnosis	D121	121	MATURE	combined	CD14 Mono		responder	Cohort2
+D130_lsc-d1	-3.83985471725464	2.00034523010254	Diagnosis	D130	130	LSC	combined	LMPP			Cohort2
+D147_lsc-d1	-2.2128369808197	-0.18506895005703	Diagnosis	D147	147	LSC	combined	MEP	no	responder	Cohort2
+D180_lsc-d1	-3.88655781745911	1.08345448970795	Diagnosis	D180	180	LSC	combined	LMPP		non_responder	Cohort2
+D180_mature-d1	-8.11848068237305	-5.11510944366455	Diagnosis	D180	180	MATURE	combined	CD14 Mono		non_responder	Cohort2
+D181_lsc-d1	-3.00586414337158	0.884126245975494	Diagnosis	D181	181	LSC	combined	LMPP		responder	Cohort2
+D183_lsc-d1	-2.26148867607117	-0.437677592039108	Diagnosis	D183	183	LSC	combined	MEP		non_responder	Cohort2
+D183_mature-d1	-9.30996227264404	-3.51347517967224	Diagnosis	D183	183	MATURE	combined	CD14 Mono		non_responder	Cohort2
+D185_lsc-d1	-3.24576210975647	0.876200318336487	Diagnosis	D185	185	LSC	combined	MEP			Cohort2
+D185_mature-d1	-7.9814133644104	-4.63741683959961	Diagnosis	D185	185	MATURE	combined	CD14 Mono			Cohort2
+D186_lsc-d1	-3.77927494049072	1.15809535980225	Diagnosis	D186	186	LSC	combined	LMPP		non_responder	Cohort2
+D186_mature-d1	-3.53964495658875	1.28709828853607	Diagnosis	D186	186	MATURE	combined	MEP		non_responder	Cohort2
+R12_lsc-r1-rep2	-4.29884147644043	1.66826498508453	Relapse	R12	R12	LSC	combined	LMPP	no		Cohort2
+R12_mature-r1	-8.11043453216553	-4.87470388412476	Relapse	R12	R12	MATURE	combined	CD14 Mono	no		Cohort2
+R15_lsc-r1	-3.50361084938049	1.21791100502014	Relapse	R15	R15	LSC	combined	MEP	no		Cohort2
+R21_mature-r1	-3.52633428573608	1.00581705570221	Relapse	R21	R21	MATURE	combined	LMPP	no		Cohort2
+R24_mature-r1	-5.24463891983032	0.317620605230331	Relapse	R24	R24	MATURE	combined	CD14 Mono	no		Cohort2
+R26_mature-r1	-8.39175033569336	-5.57880592346191	Salvage	R26	R26	MATURE	combined	CD14 Mono	no	non_responder	Cohort2
+R27_lsc-r1	-3.06732869148254	0.91096818447113	Refractory	R27	R27	LSC	combined	MEP			Cohort2
+R28_lsc-r1	-3.76985836029053	1.23416900634766	Refractory	R28	R28	LSC	combined	MEP	no		Cohort2
+R28_mature-r1	-8.20084857940674	-4.88816022872925	Refractory	R28	R28	MATURE	combined	CD14 Mono	no		Cohort2
+P26_lsc-r1	-4.44759130477905	1.75829648971558	Relapse	P26	R25	LSC	combined	LMPP	no		Cohort2
+P27_lsc-d1	-3.35605931282043	0.979338049888611	Diagnosis	P27	P27D	LSC	combined	MEP		responder	Cohort2
+P27_lsc-r1	-3.47111177444458	1.33569777011871	Relapse	P27	P27R	LSC	combined	MEP	no		Cohort2
+P28_lsc-d1	-4.339919090271	1.88269901275635	Diagnosis	P28	P28D	LSC	combined	LMPP		non_responder	Cohort2
+P28_mature-d1	-8.1806640625	-5.47528839111328	Diagnosis	P28	P28D	MATURE	combined	CD14 Mono		non_responder	Cohort2
+P28_lsc-r1	-4.66102743148804	1.17630589008331	Refractory	P28	P28R	LSC	combined	LMPP	no		Cohort2
+P28_mature-r1	-8.08053016662598	-4.79104042053223	Refractory	P28	P28R	MATURE	combined	CD14 Mono	no		Cohort2

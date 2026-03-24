@@ -1,0 +1,423 @@
+---
+title: "R Notebook - Figure 4 and Supplementary Figure 4"
+output:
+  html_document:
+    df_print: paged
+---
+This notebook covers plots in Figure 4 and Supplementary Figure 4.
+
+```{r setup, include=FALSE}
+    knitr::opts_knit$set(root.dir = normalizePath('/Users/leppam/dkfz/venetoclax/manuscripts/code_github/')) 
+```
+
+Required packages and directories.
+
+```{r, message=F}
+library(data.table)
+library(dplyr)
+library(tibble)
+library(stringr)
+library(ggplot2)
+library(ggrepel)
+library(ggnewscale)
+library(scales)
+library(cowplot)
+library(decoupleR)
+library(ggalluvial)
+library(ComplexHeatmap)
+
+input_dir <- "./input/"
+output_dir <- "./output/"
+
+# Color script
+source("./scripts/colors.R")
+```
+
+Read in data.
+
+```{r}
+# Stuart et al. healthy BM CITE-seq data
+plot_stuart_sc_bm <- fread(paste0(input_dir, 'stuart_sc_bm_df.tsv'))
+
+# Bulk projections
+bulk_projections_df <- fread(paste0(input_dir, 'bulk_projections_df.tsv'))
+
+# MATURE samples with CD64+CD11b+ cells > 40%
+mature.df <- readxl::read_excel(paste0(input_dir, 'matures_to_plot.xlsx'))
+
+# Clinical metadata of FACS sorted populations
+metadata_populations <- fread(paste0(input_dir, 'metadata_populations.tsv'))
+
+```
+
+# Plot Figure 4A
+
+Project classical immature GPR56+ LSCs and non-classical MoDe-LSCs onto a CITE-seq reference map of healthy hematopoiesis (Stuart et al.).
+
+```{r}
+
+# Combine bulk projections with Stuart et al. BM
+bulk_projections_stuart_sc_bm <- bind_rows(bulk_projections_df, plot_stuart_sc_bm)
+
+# Get cell type coordinates for labels
+label_coord <- plot_stuart_sc_bm %>%
+  group_by(celltype.l2) %>%
+  summarise(refUMAP_1 = mean(refUMAP_1),
+            refUMAP_2 = mean(refUMAP_2)) %>%
+  ungroup() %>%
+  filter(celltype.l2 %in% myeloid.cells)
+
+
+title <- 'Immature GPR56+ LSCs & MoDe-LSCs'
+
+p_lsc <- bulk_projections_stuart_sc_bm %>% 
+  filter(celltype.l2 %in% c(myeloid.cells, 'LSC','MATURE')) %>%
+  ggplot(aes(refUMAP_1, refUMAP_2)) +
+  geom_point(data = . %>% filter(batch == "bmcite"), aes(color = celltype.l2), size = 0.2, alpha = 0.2) +
+  scale_color_manual(values = lighten(col.myeloid, 0.2),
+                     guide = 'none') +
+  guides(color = 'none') +
+  # Start a new scale
+  ggnewscale::new_scale_fill() +
+  geom_point(data = . %>% filter(batch == "combined" & celltype.l2 == 'LSC'),
+             aes(fill = predicted.celltype), stroke = 0.25,
+             size = 1, alpha = 0.8, shape = 21) +
+  scale_fill_manual(values = darken(col.myeloid, 0.1),
+                    labels = paste0(myeloid.cells, '-like')) +
+  guides(fill = guide_legend(override.aes = list(shape = 21, size = 2), title = "Classical LSCs")) +
+  # Start a new scale
+  ggnewscale::new_scale_fill() +
+  # Plot mature samples with mature >40%
+  geom_point(data = . %>% filter(batch == "combined" & `Mono.LSCs` %in%  c('yes') & Cell %in% mature.df$Sample),
+             aes(fill = `Mono.LSCs`),
+             size = 1, alpha = 1, stroke = 0.25, shape = 21) +
+  scale_fill_manual(values = col.MonoLSC,
+                    labels = 'MoDe-LSC') +
+  # Start a new scale
+  ggnewscale::new_scale_color() +
+  # Add cell type labels
+  geom_text_repel(data = label_coord,
+                  aes(refUMAP_1, refUMAP_2, label = celltype.l2, color = celltype.l2),
+                  size = 2.5,
+                  fontface = 2,
+                  force = 5,
+                  force_pull = 0.5,
+                  max.overlaps = Inf,
+                  box.padding = 0.8,
+                  point.padding = 0.5,
+                  direction = "both", 
+                  segment.color = "black",
+                  segment.size = 0.25) +
+  scale_color_manual(values = darken(col.myeloid, 0.2), guide = NULL) +
+  guides(fill = guide_legend(override.aes = list(shape = 21, size = 2), title = "Non-classical LSCs")) +
+  ggtitle(paste(title)) +
+  theme_classic() + 
+  theme(legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        axis.text=element_text(size=12),
+        axis.title=element_text(size=14),
+        axis.line=element_blank(),
+        axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.ticks=element_blank()
+  ) +
+  coord_fixed() +
+  labs(title = title,
+       x = "UMAP 1",
+       y = "UMAP 2")
+
+p_lsc
+
+save_plot(paste0(output_dir, 'Projection_LSCs.pdf'), p_lsc, base_height = 5, base_width = 6)
+
+```
+
+# Figure 4C
+
+Plot the relative transcription factor expression of different LSC-types. Compare always against LMPP-like LSCs. 
+
+```{r, fig.height = 3.5, fig.width = 15}
+res_LMPP_MoDe <- fread(paste0(input_dir, 'DEG_LMPP_MoDe.tsv'))
+res_LMPP_HSC <- fread(paste0(input_dir, 'DEG_LMPP_HSC.tsv'))
+res_LMPP_MEP <- fread(paste0(input_dir, 'DEG_LMPP_MEP.tsv'))
+
+# Get TFs using dorothea
+
+# Retrieve all regulons from human (confidence levels A, B and C)
+tf_genes <- decoupleR::get_dorothea(organism = "human", levels = c('A', 'B', 'C')) %>% pull(source) %>% unique()
+length(tf_genes)
+
+# Annotate TFs
+res_LMPP_MoDe <- res_LMPP_MoDe %>%
+  mutate(Comparison = 'LMPP vs. MoDe') %>%
+  mutate(TF = case_when(SYMBOL %in% tf_genes ~ 'yes',
+                        TRUE ~ 'no')) %>%
+  # keep only TFs
+  filter(TF == 'yes')
+
+res_LMPP_HSC <- res_LMPP_HSC %>%
+  mutate(Comparison = 'LMPP vs. HSC') %>%
+  mutate(TF = case_when(SYMBOL %in% tf_genes ~ 'yes',
+                        TRUE ~ 'no')) %>%
+  # keep only TFs
+  filter(TF == 'yes')
+
+res_LMPP_MEP <- res_LMPP_MEP %>%
+  mutate(Comparison = 'LMPP vs. MEP') %>%
+  mutate(TF = case_when(SYMBOL %in% tf_genes ~ 'yes',
+                        TRUE ~ 'no')) %>%
+  # keep only TFs
+  filter(TF == 'yes')
+
+# All to LMPP
+if(all(colnames(res_LMPP_HSC) == colnames(res_LMPP_MEP) & colnames(res_LMPP_HSC) == colnames(res_LMPP_MoDe)) ) {
+  df.all <- bind_rows(res_LMPP_HSC, res_LMPP_MEP, res_LMPP_MoDe)
+}
+
+df.all <- df.all %>%
+  mutate(Comparison = factor(Comparison, levels = c('LMPP vs. HSC', 'LMPP vs. MEP', 'LMPP vs. MoDe')))
+
+# Bubble plot
+p_thresh <- 0.1
+
+# Define the order of comparisons
+comp_levels <- c('LMPP vs. HSC', 'LMPP vs. MEP', 'LMPP vs. MoDe')
+
+p_bubble <- df.all %>%
+  filter(padj < 0.1 & abs(log2FoldChange) > 1.5) %>%
+  group_by(SYMBOL) %>%
+  mutate(
+    # Assign a power-of-10 weight based on the Comparison level
+    symbol_weight = sum(10^(4 - as.numeric(factor(Comparison, levels = comp_levels))))
+  ) %>%
+  ungroup() %>%
+  # Reorder SYMBOL by this weight, then by log2FC to break ties
+  mutate(SYMBOL = reorder(SYMBOL, symbol_weight + (log2FoldChange/100))) %>%
+  
+  ggplot(aes(x = Comparison, y = SYMBOL)) +
+  geom_point(aes(fill = log2FoldChange, size = -log10(padj)),
+             shape = 21) +
+  scale_fill_gradient2(
+    high = "#832424", low = "#3A3A98", mid = 'white', 
+    midpoint = 0, oob = squish
+  ) +
+  scale_size_continuous(range = c(2, 8), name = "-log10(p-adj)") +
+  labs(
+    title = 'TF expression in LSC subtypes',
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
+    axis.title = element_blank(),
+    plot.title = element_text(hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5),
+    panel.border = element_rect(colour = "black", fill=NA, linewidth=0.25)
+  ) +
+  coord_flip()
+
+p_bubble
+
+save_plot(paste0(output_dir, 'TF_expression.pdf'), p_bubble, base_height = 3, base_width = 13)
+
+```
+
+# Supplementary Figure 4A
+
+Project publicly available RNA-seq data of CD34/CD38 AML fractions from Zeng et al. (Nature Medicine 2022) onto a healthy BM reference (Stuart et al.). Compare the CD34/CD38 fractions with our GPR56+ LSCs and MoDe-LSCs projected onto the same reference. 
+
+```{r}
+
+# Zeng et al cell type predictions
+zeng_df <- fread(file = paste0(input_dir, 'zeng_fractions_mapped.tsv'))
+
+# VV cell type predictions
+bulk_projections_df <- fread(paste0(input_dir, 'bulk_projections_df.tsv'))
+
+# Keep only sorted population generated for this paper (remove healthy cells part of the df (SeuratData: "bmcite"))
+df.vv <- bulk_projections_df %>%
+  rename(Sample = Cell,
+         Population = celltype.l2,
+         Stage = disease_stage)
+
+# Data wrangling 
+keep.cols <- c('Sample','Population','Stage','predicted.celltype','Mono.LSCs')
+
+# Keep only LSCs
+df.vv.lsc <- df.vv %>%
+  filter(Population %in% c('LSC','MATURE')) %>%
+  dplyr::select(all_of(keep.cols)) %>%
+  # if MoDe, keep MoDe-LSCs
+  mutate(priority = case_when(grepl("yes", Mono.LSCs) & Population == 'MATURE' ~ 0,
+                              Population == 'LSC' ~ 1,
+                              TRUE ~ 2)) %>%  # lower = better
+  group_by(Sample) %>%
+  arrange(priority, row_number()) %>%
+  slice_head(n = 1) %>%
+  ungroup() %>%
+  # Remove samples that only have a non-MoDe Mature
+  filter(priority != 2) %>%
+  # name the cohort
+  mutate(cohort = 'Current data') %>%
+  # add FACS population
+  mutate(population = case_when(Population == 'LSC' ~ 'GPR56+ LSC',
+                                Population == 'MATURE' ~ 'MoDe-LSC',
+                                TRUE ~ NA)) %>%
+  mutate(population = factor(population, levels = c('GPR56+ LSC','MoDe-LSC'))) %>%
+  dplyr::select('Sample','population', 'predicted.celltype','cohort')
+
+df.zeng.lsc <- zeng_df %>%
+  # name the cohort
+  mutate(cohort = 'Zeng et al.') %>%
+  mutate(population = factor(population, levels = c('CD34+CD38-', 'CD34+CD38+', 'CD34-CD38-', 'CD34-CD38+'))) %>%
+  rename(Sample = 'cell') %>%
+  dplyr::select('Sample','population', 'predicted.celltype','cohort')
+
+df.AML <- bind_rows(df.vv.lsc, df.zeng.lsc) %>%
+  mutate(predicted.celltype = factor(predicted.celltype, levels = names(col.celltype)))
+
+# Compare cell type changes between predicted cell type and facs cell type
+df.alluvial <- df.AML %>%
+  group_by(cohort) %>%
+  count(predicted.celltype, population, name = "Count") %>%
+  group_by(cohort, population) %>%
+  mutate(Fraction = Count/sum(Count))
+
+# Plot alluvial plots
+p_alluvial <- df.alluvial %>%
+  ggplot(aes(y = Count, axis1 = population, axis2 = predicted.celltype)) +
+  ggalluvial::geom_alluvium(aes(fill = predicted.celltype), width = 1/12) +
+  ggalluvial::geom_stratum(width = 1/12, fill = "black", color = "grey") +
+  geom_label(stat = "stratum", aes(label = after_stat(stratum)), size = 2) +
+  scale_fill_manual(values = col.celltype) +
+  facet_wrap(vars(cohort), scales = 'free_y', ncol = 2) +
+  scale_x_discrete(limits = c("population", "predicted.celltype"),
+                   labels = c("FACS population", "BM ref. Stuart et al."), expand = c(.2, .2)) +
+  labs(title = 'FACS to cell type predictions') +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, vjust = 1))
+
+p_alluvial
+
+save_plot(paste0(output_dir, 'FACS_to_celltype_predictions.pdf'), p_alluvial, ncol = 2, base_height = 5, base_width = 3)
+
+```
+# Supplementary Figure 4I
+
+Plot oncoprints of recurrent mutations and cytogenetics grouped by LSC-type for diagnosis and salvage patient cohort.
+Use FACS sorted population metadata that contains clinical and mutational information of the patient.
+
+```{r}
+
+# Keep only classical LSCs
+meta.lsc <- metadata_populations %>%
+  filter(Stage %in% c('Diagnosis','Salvage')) %>%
+  filter(Population %in% c('LSC','MATURE')) %>%
+  # Keep classical and non-classical LSCs
+  filter( (Population == 'LSC' & (Mono.LSCs_engraftment_or_lamp5 == '' | Mono.LSCs_engraftment_or_lamp5 == 'no')) | 
+          (Population == 'MATURE' & Mono.LSCs_engraftment_or_lamp5 == 'yes') ) %>%
+  distinct(Sample, .keep_all = TRUE) %>%
+  # Create new cell type label
+  mutate(LSC_type = case_when(Mono.LSCs_engraftment_or_lamp5 == 'yes' ~ 'MoDe',
+                              TRUE ~ predicted.celltype)) %>%
+  mutate(LSC_type = factor(LSC_type, levels = c('HSC', 'LMPP', 'MEP','MoDe'))) %>%
+  filter(!is.na(LSC_type))
+
+# Patterns to group chromosomal alterations
+meta.lsc$`-5/del(5q)` <- ifelse(str_detect(meta.lsc$Karyotype, paste(c("del\\(5\\)\\(q", "del5q", "\\-5"), collapse = '|')) == TRUE, 'loss', '')
+meta.lsc$`-7/del(7q)` <- ifelse(str_detect(meta.lsc$Karyotype, paste(c("del\\(7\\)\\(q", "del7q", "\\-7"), collapse = '|')) == TRUE, 'loss', '')
+meta.lsc$`-17/del(17p)` <- ifelse(str_detect(meta.lsc$Karyotype, paste(c("del\\(17\\)\\(p", "del17p", "\\-17"), collapse = '|')) == TRUE, 'loss', '')
+meta.lsc$`+8/dup(8q)` <- ifelse(str_detect(meta.lsc$Karyotype, paste(c("dup\\(8\\)\\(q", "add\\(8\\)\\(q", "Trisomie 8q21", "\\+8"), collapse = '|')) == TRUE, 'gain', '')
+
+mat <- meta.lsc %>% 
+  select(Sample, KMT2A.re:c.Kit, `-5/del(5q)`:`+8/dup(8q)`) %>% 
+  distinct(Sample, .keep_all = TRUE) %>%
+  # Remove NAs
+  filter(TP53 != 'N/A') %>%
+  # Change yes/no to binary
+  mutate_at(vars(TP53:c.Kit), funs(ifelse(. == 'yes', "snv", ""))) %>%
+  mutate_at(vars(KMT2A.re:Complex), funs(ifelse(. == 'yes', "other", ""))) %>%
+  rename('KMT2A-re' = KMT2A.re, 'IDH1/2' = IDH1.2, 'Splicing' = SF) %>%
+  column_to_rownames('Sample') %>%
+  as.matrix()
+
+# In order to clearly visualize the data, genes for which less than 4% patients have mutations (l2) and patients which have mutations in less than 1% of the genes (l1) are removed.
+l1 = apply(mat, 1, function(x) sum(!grepl("^\\s*$", x))/length(x) >= 0.01)
+l2 = apply(mat, 2, function(x) sum(!grepl("^\\s*$", x))/length(x) >= 0.04)
+
+mat.flt <- mat[l1, l2]
+
+# Filter metadata to contain same samples as mat
+meta.flt <- meta.lsc %>%
+  distinct(Sample, .keep_all = TRUE) %>%
+  # Remove NAs
+  filter(!is.na(TP53)) %>%
+  column_to_rownames('Sample')
+
+# Keep only rows present in mat
+meta.flt <- meta.flt[rownames(meta.flt) %in% rownames(mat.flt), ]
+
+col = c("snv" = " black", "loss" = "darkblue", "gain" = "darkred", "other" = 'darkorange')
+
+alter_fun = list(
+    background = alter_graphic("rect", fill = "lightgrey"),   
+    snv = alter_graphic("rect", fill = 'black', height = 0.5, width = 0.6),
+    loss = alter_graphic("rect", fill = 'darkblue', height = 0.5, width = 0.6),
+    gain = alter_graphic("rect", fill = 'darkred', height = 0.5, width = 0.6),
+    other = alter_graphic("rect", fill = 'darkorange', height = 0.5, width = 0.6)
+)
+
+column_title = paste0("OncoPrint for AML samples (n = ", nrow(mat), ")")
+heatmap_legend_param = list(title = "Alternations", at = c("snv", "other", "loss", "gain"), 
+                            labels = c("SNV", "Other", "Deletion", "Duplication"),
+                            title_gp = gpar(fontsize = 6),
+                            labels_gp = gpar(fontsize = 6)
+)
+
+# With Mono
+col.cell.types<- c('HSC' = '#A7303099',
+                   'LMPP' = '#CD534C99',
+                   'MEP' = '#8F770099',
+                   'MoDe' = 'darkred')
+
+column_ha <- HeatmapAnnotation(cbar = anno_oncoprint_barplot(axis_param = list(gp = gpar(fontsize = 6))
+                                                             ),
+                               "LSC Type" = meta.flt$LSC_type,
+                               col = list("LSC Type" = col.cell.types),
+                               annotation_name_gp = gpar(fontsize = 6),
+                               annotation_legend_param = list(
+                                 "LSC Type" = list(
+                                   title_gp = gpar(fontsize = 6),
+                                   labels_gp = gpar(fontsize = 6))
+                               ),
+                               height = unit(3, "cm"))
+
+column_ha <- re_size(column_ha, annotation_height = c(unit(1, "cm"), unit(0.25, "cm")), height = unit(1.25, "cm"))
+
+ht <- oncoPrint(t(mat.flt), alter_fun = alter_fun, col = col, column_title = NULL,
+               top_annotation = column_ha,
+               column_names_gp = gpar(fontsize = 8),
+               pct_gp = gpar(fontsize = 8),
+               # Split column based on celltype
+               column_split = meta.flt$LSC_type,
+               heatmap_legend_param = heatmap_legend_param)
+
+ht
+
+# Save without histogram (barplot) on the right side
+ht_minimal <- oncoPrint(t(mat.flt), alter_fun = alter_fun, col = col, column_title = NULL,
+               top_annotation = column_ha,
+               right_annotation = NULL,
+               column_names_gp = gpar(fontsize = 6),
+               pct_gp = gpar(fontsize = 6),
+               # Split column based on celltype
+               column_split = meta.flt$LSC_type,
+               heatmap_legend_param = heatmap_legend_param)
+
+
+pdf(paste0(output_dir, 'Combined_cohort_oncoPrint_LSCtypes.pdf'), width = 4.5, height = 3)
+ht_minimal
+dev.off()
+```
+
