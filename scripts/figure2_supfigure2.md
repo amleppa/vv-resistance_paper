@@ -1,18 +1,13 @@
----
-title: "R Notebook - Figure 2 and Supplementary Figure 2"
-output:
-  html_document:
-    df_print: paged
-    keep_md: true
-  github_document:
-    toc: true
----
+R Notebook - Figure 2 and Supplementary Figure 2
+================
+
+- [Figure 2A](#figure-2a)
+- [Supplementary Figure 2A](#supplementary-figure-2a)
+- [Supplementary Figure 2B](#supplementary-figure-2b)
+
 This notebook covers plots in Figure 2 and Supplementary Figure 2.
 
-
-
 Required packages and directories.
-
 
 ``` r
 library(data.table)
@@ -34,7 +29,6 @@ source("./scripts/colors.R")
 
 Read in data.
 
-
 ``` r
 # Paired scRNA-seq data for plotting
 plot_sc_paired <- fread(paste0(input_dir, 'sc_paired_df.tsv'))
@@ -49,11 +43,11 @@ bulk_projections_df <- fread(paste0(input_dir, 'bulk_projections_df.tsv'))
 mature.df <- readxl::read_excel(paste0(input_dir, 'matures_to_plot.xlsx'))
 ```
 
-
 # Figure 2A
 
-Plot mature cells from a patient with classical LSCs and a patient with non-classical LSCs using CITE-seq data from Stuart et al. as the BM reference.
-
+Plot mature cells from a patient with classical LSCs and a patient with
+non-classical LSCs using CITE-seq data from Stuart et al. as the BM
+reference.
 
 ``` r
 # Get cell type coordinates for labels
@@ -138,7 +132,7 @@ p_both <- plots[[1]] +  plots[[2]] + theme(legend.position = 'none')
 p_both
 ```
 
-![](figure2_supfigure2_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](figure2_supfigure2_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ``` r
 save_plot(paste0(output_dir, 'Mature_classical_vs_non_classical_LSC.pdf'), p_both, ncol = 2, base_height = 5, base_width = 4)
@@ -146,8 +140,9 @@ save_plot(paste0(output_dir, 'Mature_classical_vs_non_classical_LSC.pdf'), p_bot
 
 # Supplementary Figure 2A
 
-Plot mature cells from a patient with classical LSCs and a patient with non-classical LSCs using scRNA-seq data from Zeng et al. as the BM reference.
-
+Plot mature cells from a patient with classical LSCs and a patient with
+non-classical LSCs using scRNA-seq data from Zeng et al. as the BM
+reference.
 
 ``` r
 # Get cell type coordinates for labels
@@ -229,7 +224,7 @@ p_both_zeng <- plots_zeng[[1]] +  plots_zeng[[2]] + theme(legend.position = 'non
 p_both_zeng
 ```
 
-![](figure2_supfigure2_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](figure2_supfigure2_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
 save_plot(paste0(output_dir, 'Mature_classical_vs_non_classical_LSC_zeng_ref.pdf'), p_both_zeng, ncol = 2, base_height = 5, base_width = 4)
@@ -237,8 +232,8 @@ save_plot(paste0(output_dir, 'Mature_classical_vs_non_classical_LSC_zeng_ref.pdf
 
 # Supplementary Figure 2B
 
-Project non-classical LSCs onto a healthy BM reference. Plot only MATURE samples from patients with CD64+CD11b+ cells > 40%.
-
+Project non-classical LSCs onto a healthy BM reference. Plot only MATURE
+samples from patients with CD64+CD11b+ cells \> 40%.
 
 ``` r
 # Combine bulk projections with Stuart et al. BM
@@ -310,7 +305,7 @@ p_monolsc <- bulk_projections_stuart_sc_bm %>%
 p_monolsc
 ```
 
-![](figure2_supfigure2_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![](figure2_supfigure2_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
 save_plot(paste0(output_dir, 'Projection_non_classical_LSCs.pdf'), p_monolsc, base_height = 5, base_width = 6)

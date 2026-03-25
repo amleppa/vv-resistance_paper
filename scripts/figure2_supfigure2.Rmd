@@ -1,11 +1,11 @@
 ---
 title: "R Notebook - Figure 2 and Supplementary Figure 2"
 output:
+  github_document:
+    toc: true
   html_document:
     df_print: paged
     keep_md: true
-  github_document:
-    toc: true
 ---
 This notebook covers plots in Figure 2 and Supplementary Figure 2.
 
