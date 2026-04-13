@@ -1,6 +1,8 @@
 # Code repository accompanying publication:
 ## Leukemic stem cell subtypes determine venetoclax resistance and therapeutic vulnerabilities in AML
 
+[![DOI](https://zenodo.org/badge/1179746831.svg)](https://doi.org/10.5281/zenodo.19552379)
+
 For the full manuscript see:
 
 [Waclawiczek, Leppä, Renders et al. (2026), Leukemic stem cell subtypes determine venetoclax resistance and therapeutic vulnerabilities in AML](add link to paper)
