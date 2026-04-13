@@ -1,4 +1,5 @@
-# Code repository accompanying publication on targeting of leukemic stem cell subtypes to overcome Venetoclax resistance
+# Code repository accompanying publication:
+## Leukemic stem cell subtypes determine venetoclax resistance and therapeutic vulnerabilities in AML
 
 For the full manuscript see:
 
