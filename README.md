@@ -2,7 +2,7 @@
 
 For the full manuscript see:
 
-[Waclawiczek, Leppä, Renders et al. (2026), Targeting of leukemic stem cell subtypes overcomes Venetoclax resistance *Cell Stem Cell*](add link to paper)
+[Waclawiczek, Leppä, Renders et al. (2026), Leukemic stem cell subtypes determine venetoclax resistance and therapeutic vulnerabilities in AML](add link to paper)
 
 Code for the manuscript figures can be found here:
 
