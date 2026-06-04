@@ -21,7 +21,7 @@ Code for the manuscript figures can be found here:
 
 ## Sample ID mapping
 
-The file `sample_id_key.tsv` provides a mapping between sequencing sample IDs used in this repository (`Sample`) and the sample identifiers used in the manuscript (`D.ID_1`, as reported in Supplementary Table 6).
+The file `sample_id_key.tsv` provides a mapping between sequencing sample IDs used in this repository (`Sample`) and the sample identifiers used in the manuscript (`D.ID_1`, as reported in Supplementary Table 4).
 
 Sequencing was performed at the population level, meaning that multiple `Sample` entries may correspond to the same `D.ID_1` (a patient-level identifier at a given timepoint).
 
